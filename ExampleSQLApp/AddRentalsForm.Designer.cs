@@ -28,10 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            TimerCreateTable = new System.Windows.Forms.Timer(components);
-            HireDateField = new DateTimePicker();
-            BirthDateField = new DateTimePicker();
+            RentalReturnDate = new DateTimePicker();
+            RentalStartDate = new DateTimePicker();
             CloseButton = new Label();
             label2 = new Label();
             LabelPhoneNumber = new Label();
@@ -42,32 +40,28 @@
             TitleLabel = new Label();
             label3 = new Label();
             MainPanel = new Panel();
-            ComboBoxCustomer = new ComboBox();
-            ComboBoxEmployeer = new ComboBox();
             ComboBoxMovie = new ComboBox();
+            ComboBoxEmployee = new ComboBox();
+            ComboBoxCustomer = new ComboBox();
             TopPanel.SuspendLayout();
             MainPanel.SuspendLayout();
             SuspendLayout();
             // 
-            // TimerCreateTable
+            // RentalReturnDate
             // 
-            TimerCreateTable.Interval = 10000;
+            RentalReturnDate.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            RentalReturnDate.Location = new Point(497, 217);
+            RentalReturnDate.Name = "RentalReturnDate";
+            RentalReturnDate.Size = new Size(256, 34);
+            RentalReturnDate.TabIndex = 18;
             // 
-            // HireDateField
+            // RentalStartDate
             // 
-            HireDateField.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            HireDateField.Location = new Point(497, 217);
-            HireDateField.Name = "HireDateField";
-            HireDateField.Size = new Size(256, 34);
-            HireDateField.TabIndex = 18;
-            // 
-            // BirthDateField
-            // 
-            BirthDateField.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            BirthDateField.Location = new Point(497, 124);
-            BirthDateField.Name = "BirthDateField";
-            BirthDateField.Size = new Size(256, 34);
-            BirthDateField.TabIndex = 15;
+            RentalStartDate.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            RentalStartDate.Location = new Point(497, 124);
+            RentalStartDate.Name = "RentalStartDate";
+            RentalStartDate.Size = new Size(256, 34);
+            RentalStartDate.TabIndex = 15;
             // 
             // CloseButton
             // 
@@ -138,6 +132,7 @@
             AddButton.TabIndex = 5;
             AddButton.Text = "Добавить";
             AddButton.UseVisualStyleBackColor = false;
+            AddButton.Click += AddButton_Click;
             // 
             // TopPanel
             // 
@@ -161,6 +156,8 @@
             TitleLabel.TabIndex = 0;
             TitleLabel.Text = "Добавление аренды";
             TitleLabel.TextAlign = ContentAlignment.MiddleCenter;
+            TitleLabel.MouseDown += TitleLabel_MouseDown;
+            TitleLabel.MouseMove += TitleLabel_MouseMove;
             // 
             // label3
             // 
@@ -176,10 +173,10 @@
             // 
             MainPanel.BackColor = Color.Teal;
             MainPanel.Controls.Add(ComboBoxMovie);
-            MainPanel.Controls.Add(ComboBoxEmployeer);
+            MainPanel.Controls.Add(ComboBoxEmployee);
             MainPanel.Controls.Add(ComboBoxCustomer);
-            MainPanel.Controls.Add(HireDateField);
-            MainPanel.Controls.Add(BirthDateField);
+            MainPanel.Controls.Add(RentalReturnDate);
+            MainPanel.Controls.Add(RentalStartDate);
             MainPanel.Controls.Add(label2);
             MainPanel.Controls.Add(label3);
             MainPanel.Controls.Add(LabelPhoneNumber);
@@ -193,24 +190,6 @@
             MainPanel.Size = new Size(800, 450);
             MainPanel.TabIndex = 3;
             // 
-            // ComboBoxCustomer
-            // 
-            ComboBoxCustomer.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            ComboBoxCustomer.FormattingEnabled = true;
-            ComboBoxCustomer.Location = new Point(41, 127);
-            ComboBoxCustomer.Name = "ComboBoxCustomer";
-            ComboBoxCustomer.Size = new Size(256, 35);
-            ComboBoxCustomer.TabIndex = 19;
-            // 
-            // ComboBoxEmployeer
-            // 
-            ComboBoxEmployeer.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            ComboBoxEmployeer.FormattingEnabled = true;
-            ComboBoxEmployeer.Location = new Point(41, 220);
-            ComboBoxEmployeer.Name = "ComboBoxEmployeer";
-            ComboBoxEmployeer.Size = new Size(256, 35);
-            ComboBoxEmployeer.TabIndex = 20;
-            // 
             // ComboBoxMovie
             // 
             ComboBoxMovie.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
@@ -220,6 +199,24 @@
             ComboBoxMovie.Size = new Size(256, 35);
             ComboBoxMovie.TabIndex = 21;
             // 
+            // ComboBoxEmployee
+            // 
+            ComboBoxEmployee.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            ComboBoxEmployee.FormattingEnabled = true;
+            ComboBoxEmployee.Location = new Point(41, 220);
+            ComboBoxEmployee.Name = "ComboBoxEmployee";
+            ComboBoxEmployee.Size = new Size(256, 35);
+            ComboBoxEmployee.TabIndex = 20;
+            // 
+            // ComboBoxCustomer
+            // 
+            ComboBoxCustomer.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            ComboBoxCustomer.FormattingEnabled = true;
+            ComboBoxCustomer.Location = new Point(41, 127);
+            ComboBoxCustomer.Name = "ComboBoxCustomer";
+            ComboBoxCustomer.Size = new Size(256, 35);
+            ComboBoxCustomer.TabIndex = 19;
+            // 
             // AddRentalsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -228,6 +225,7 @@
             Controls.Add(MainPanel);
             FormBorderStyle = FormBorderStyle.None;
             Name = "AddRentalsForm";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "AddRentalsForm";
             TopPanel.ResumeLayout(false);
             TopPanel.PerformLayout();
@@ -237,10 +235,8 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Timer TimerCreateTable;
-        private DateTimePicker HireDateField;
-        private DateTimePicker BirthDateField;
+        private DateTimePicker RentalReturnDate;
+        private DateTimePicker RentalStartDate;
         private Label CloseButton;
         private Label label2;
         private Label LabelPhoneNumber;
@@ -253,6 +249,6 @@
         private Panel MainPanel;
         private ComboBox ComboBoxCustomer;
         private ComboBox ComboBoxMovie;
-        private ComboBox ComboBoxEmployeer;
+        private ComboBox ComboBoxEmployee;
     }
 }

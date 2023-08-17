@@ -113,7 +113,7 @@
             // Employees
             // 
             Employees.Controls.Add(tableLayoutPanel1);
-            Employees.Cursor = Cursors.Hand;
+            Employees.Cursor = Cursors.Default;
             Employees.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             Employees.Location = new Point(4, 24);
             Employees.Name = "Employees";
@@ -141,6 +141,7 @@
             // listViewEmployees
             // 
             listViewEmployees.Dock = DockStyle.Fill;
+            listViewEmployees.FullRowSelect = true;
             listViewEmployees.GridLines = true;
             listViewEmployees.Location = new Point(3, 3);
             listViewEmployees.Name = "listViewEmployees";
@@ -148,6 +149,8 @@
             listViewEmployees.TabIndex = 0;
             listViewEmployees.UseCompatibleStateImageBehavior = false;
             listViewEmployees.View = View.Details;
+            listViewEmployees.SelectedIndexChanged += listViewEmployees_SelectedIndexChanged;
+            listViewEmployees.MouseClick += listViewEmployees_MouseClick;
             // 
             // buttonAddEmployees
             // 
@@ -162,7 +165,7 @@
             // Customers
             // 
             Customers.Controls.Add(tableLayoutPanel2);
-            Customers.Cursor = Cursors.Hand;
+            Customers.Cursor = Cursors.Default;
             Customers.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             Customers.Location = new Point(4, 24);
             Customers.Name = "Customers";
@@ -199,16 +202,20 @@
             // listViewCustomers
             // 
             listViewCustomers.Dock = DockStyle.Fill;
+            listViewCustomers.FullRowSelect = true;
+            listViewCustomers.GridLines = true;
             listViewCustomers.Location = new Point(3, 3);
             listViewCustomers.Name = "listViewCustomers";
             listViewCustomers.Size = new Size(1330, 498);
             listViewCustomers.TabIndex = 0;
             listViewCustomers.UseCompatibleStateImageBehavior = false;
+            listViewCustomers.View = View.Details;
+            listViewCustomers.SelectedIndexChanged += listViewCustomers_SelectedIndexChanged;
             // 
             // Movies
             // 
             Movies.Controls.Add(tableLayoutPanel3);
-            Movies.Cursor = Cursors.Hand;
+            Movies.Cursor = Cursors.Default;
             Movies.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             Movies.Location = new Point(4, 24);
             Movies.Name = "Movies";
@@ -241,20 +248,25 @@
             buttonAddMovies.TabIndex = 3;
             buttonAddMovies.Text = "Добавить запись";
             buttonAddMovies.UseVisualStyleBackColor = true;
+            buttonAddMovies.Click += buttonAddMovies_Click;
             // 
             // listViewMovies
             // 
             listViewMovies.Dock = DockStyle.Fill;
+            listViewMovies.FullRowSelect = true;
+            listViewMovies.GridLines = true;
             listViewMovies.Location = new Point(3, 3);
             listViewMovies.Name = "listViewMovies";
             listViewMovies.Size = new Size(1330, 498);
             listViewMovies.TabIndex = 0;
             listViewMovies.UseCompatibleStateImageBehavior = false;
+            listViewMovies.View = View.Details;
+            listViewMovies.SelectedIndexChanged += listViewMovies_SelectedIndexChanged;
             // 
             // Rentals
             // 
             Rentals.Controls.Add(tableLayoutPanel4);
-            Rentals.Cursor = Cursors.Hand;
+            Rentals.Cursor = Cursors.Default;
             Rentals.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             Rentals.Location = new Point(4, 24);
             Rentals.Name = "Rentals";
@@ -287,20 +299,25 @@
             buttonAddRentals.TabIndex = 3;
             buttonAddRentals.Text = "Добавить запись";
             buttonAddRentals.UseVisualStyleBackColor = true;
+            buttonAddRentals.Click += buttonAddRentals_Click;
             // 
             // listViewRentals
             // 
             listViewRentals.Dock = DockStyle.Fill;
+            listViewRentals.FullRowSelect = true;
+            listViewRentals.GridLines = true;
             listViewRentals.Location = new Point(3, 3);
             listViewRentals.Name = "listViewRentals";
             listViewRentals.Size = new Size(1330, 498);
             listViewRentals.TabIndex = 0;
             listViewRentals.UseCompatibleStateImageBehavior = false;
+            listViewRentals.View = View.Details;
+            listViewRentals.SelectedIndexChanged += listViewRentals_SelectedIndexChanged;
             // 
             // Ratings
             // 
             Ratings.Controls.Add(tableLayoutPanel5);
-            Ratings.Cursor = Cursors.Hand;
+            Ratings.Cursor = Cursors.Default;
             Ratings.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             Ratings.Location = new Point(4, 24);
             Ratings.Name = "Ratings";
@@ -337,11 +354,15 @@
             // listViewRatings
             // 
             listViewRatings.Dock = DockStyle.Fill;
+            listViewRatings.FullRowSelect = true;
+            listViewRatings.GridLines = true;
             listViewRatings.Location = new Point(3, 3);
             listViewRatings.Name = "listViewRatings";
             listViewRatings.Size = new Size(1330, 498);
             listViewRatings.TabIndex = 0;
             listViewRatings.UseCompatibleStateImageBehavior = false;
+            listViewRatings.View = View.Details;
+            listViewRatings.SelectedIndexChanged += listViewRatings_SelectedIndexChanged;
             // 
             // TopPanel
             // 
@@ -357,7 +378,7 @@
             // CloseButton
             // 
             CloseButton.AutoSize = true;
-            CloseButton.Cursor = Cursors.Hand;
+            CloseButton.Cursor = Cursors.Default;
             CloseButton.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
             CloseButton.ForeColor = Color.Gray;
             CloseButton.Location = new Point(1320, 0);

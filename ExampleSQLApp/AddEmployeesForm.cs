@@ -13,9 +13,11 @@ namespace ExampleSQLApp
 {
     public partial class AddEmployeesForm : Form
     {
-        public AddEmployeesForm()
+        private MainForm mainForm;
+        public AddEmployeesForm(MainForm mainForm)
         {
             InitializeComponent();
+            this.mainForm = mainForm;
             TerminationDateField.CustomFormat = " ";
             TerminationDateField.Format = DateTimePickerFormat.Custom;
         }
@@ -50,6 +52,13 @@ namespace ExampleSQLApp
             DateTime hireDate = HireDateField.Value;
             DateTime terminationDate = TerminationDateField.Value;
 
+
+            if (fullName == string.Empty || address == string.Empty || phoneNumber == string.Empty)
+            {
+                MessageBox.Show("Поля \"ФИО\", \"Адрес\", \"Телефон\" обязательны к заполнению.", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             // Подключение к базе данных
             using (NpgsqlConnection connection = DB.GetConnection())
             {
@@ -57,8 +66,8 @@ namespace ExampleSQLApp
 
                 // SQL-запрос для вставки данных
                 string insertQuery = @"
-            INSERT INTO Employees (FullName, BirthDate, Address, PhoneNumber, HireDate, TerminationDate)
-            VALUES (@fullName, @birthDate, @address, @phoneNumber, @hireDate, @terminationDate)";
+                    INSERT INTO Employees (FullName, BirthDate, Address, PhoneNumber, HireDate, TerminationDate)
+                    VALUES (@fullName, @birthDate, @address, @phoneNumber, @hireDate, @terminationDate)";
 
                 using (NpgsqlCommand command = new NpgsqlCommand(insertQuery, connection))
                 {
@@ -82,72 +91,8 @@ namespace ExampleSQLApp
             AddressField.Clear();
             PhoneNumberField.Clear();
             this.Close();
-
+            mainForm.LoadEmployeesData();
         }
 
-        private void TerminationDateField_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void HireDateField_ValueChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void BirthDateField_ValueChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void PhoneNumberField_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void AddressField_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void FullNameField_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void LabelPhoneNumber_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void LabelAddress_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void LabelFullName_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void TopPanel_Paint(object sender, PaintEventArgs e)
-        {
-        }
-
-        private void MainPanel_Paint(object sender, PaintEventArgs e)
-        {
-        }
-
-        private void TitleLabel_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void TimerCreateTable_Tick(object sender, EventArgs e)
-        {
-        }
     }
 }

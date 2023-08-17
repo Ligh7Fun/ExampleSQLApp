@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ExampleSQLApp
 {
@@ -18,6 +19,7 @@ namespace ExampleSQLApp
         {
             InitializeComponent();
             //TabControl.SelectedIndexChanged += new EventHandler(TabControl_SelectedIndexChanged);
+
             LoadEmployeesData();
         }
 
@@ -70,7 +72,7 @@ namespace ExampleSQLApp
             }
         }
 
-        private void LoadMoviesData()
+        public void LoadMoviesData()
         {
             // Очистите предыдущие данные в listViewMovies
             listViewMovies.Items.Clear();
@@ -129,7 +131,7 @@ namespace ExampleSQLApp
             }
         }
 
-        private void LoadEmployeesData()
+        public void LoadEmployeesData()
         {
             // Очистка предыдущих данных в listViewEmployees
             listViewEmployees.Items.Clear();
@@ -188,7 +190,7 @@ namespace ExampleSQLApp
             }
         }
 
-        private void LoadCustomersData()
+        public void LoadCustomersData()
         {
             // Очистите предыдущие данные в listViewCustomers
             listViewCustomers.Items.Clear();
@@ -246,7 +248,7 @@ namespace ExampleSQLApp
         }
 
 
-        private void LoadRentalsData()
+        public void LoadRentalsData()
         {
             // Очистите предыдущие данные в listViewRentals
             listViewRentals.Items.Clear();
@@ -303,7 +305,7 @@ namespace ExampleSQLApp
         }
 
 
-        private void LoadRatingsData()
+        public void LoadRatingsData()
         {
             // Очистите предыдущие данные в listViewRatings
             listViewRatings.Items.Clear();
@@ -358,10 +360,138 @@ namespace ExampleSQLApp
 
         private void buttonAddEmployees_Click(object sender, EventArgs e)
         {
-            AddEmployeesForm addEmployeesForm = new AddEmployeesForm();
+            AddEmployeesForm addEmployeesForm = new AddEmployeesForm(this);
             addEmployeesForm.ShowDialog();
         }
 
+        private void buttonAddRentals_Click(object sender, EventArgs e)
+        {
+            AddRentalsForm addRentalsForm = new AddRentalsForm(this);
+            addRentalsForm.ShowDialog();
+        }
 
+        private void buttonAddMovies_Click(object sender, EventArgs e)
+        {
+            AddMoviesForm addMoviesForm = new AddMoviesForm(this);
+            addMoviesForm.ShowDialog();
+        }
+
+        private void listViewRatings_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listViewRatings.SelectedItems.Count > 0)
+            {
+                ListViewItem selectedItem = listViewRatings.SelectedItems[0];
+
+                // Получаем данные из выбранной строки
+                string ratingID = selectedItem.SubItems[0].Text;
+                string customerID = selectedItem.SubItems[1].Text;
+                string movieID = selectedItem.SubItems[2].Text;
+                string rating = selectedItem.SubItems[3].Text;
+                string comment = selectedItem.SubItems[4].Text;
+
+                //TODO: значения в textbox'ах
+            }
+        }
+
+        private void listViewEmployees_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listViewEmployees.SelectedItems.Count > 0)
+            {
+                ListViewItem selectedItem = listViewEmployees.SelectedItems[0];
+
+                // Получаем данные из выбранной строки
+                string employeeID = selectedItem.SubItems[0].Text;
+                string fullName = selectedItem.SubItems[1].Text;
+                string birthDate = selectedItem.SubItems[2].Text;
+                string address = selectedItem.SubItems[3].Text;
+                string phoneNumber = selectedItem.SubItems[4].Text;
+                string hireDate = selectedItem.SubItems[5].Text;
+                string terminationDate = selectedItem.SubItems[6].Text;
+
+                //TODO: значения в textbox'ах
+            }
+        }
+
+        private void listViewCustomers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listViewCustomers.SelectedItems.Count > 0)
+            {
+                ListViewItem selectedItem = listViewCustomers.SelectedItems[0];
+
+                // Получаем данные из выбранной строки
+                string customerID = selectedItem.SubItems[0].Text;
+                string fullName = selectedItem.SubItems[1].Text;
+                string birthDate = selectedItem.SubItems[2].Text;
+                string address = selectedItem.SubItems[3].Text;
+                string phoneNumber = selectedItem.SubItems[4].Text;
+                string registrationDate = selectedItem.SubItems[5].Text;
+
+                //TODO: значения в textbox'ах
+            }
+        }
+
+        private void listViewRentals_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listViewRentals.SelectedItems.Count > 0)
+            {
+                ListViewItem selectedItem = listViewRentals.SelectedItems[0];
+
+                // Получаем данные из выбранной строки
+                string rentalID = selectedItem.SubItems[0].Text;
+                string customer = selectedItem.SubItems[1].Text;
+                string employee = selectedItem.SubItems[2].Text;
+                string movie = selectedItem.SubItems[3].Text;
+                string rentalDate = selectedItem.SubItems[4].Text;
+                string returnDate = selectedItem.SubItems[5].Text;
+
+                //TODO: значения в textbox'ах
+            }
+        }
+
+        private void listViewMovies_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listViewMovies.SelectedItems.Count > 0)
+            {
+                ListViewItem selectedItem = listViewMovies.SelectedItems[0];
+
+                // Получаем данные из выбранной строки
+                string movieID = selectedItem.SubItems[0].Text;
+                string title = selectedItem.SubItems[1].Text;
+                string releaseYear = selectedItem.SubItems[2].Text;
+                string director = selectedItem.SubItems[3].Text;
+                string country = selectedItem.SubItems[4].Text;
+                string duration = selectedItem.SubItems[5].Text;
+                string dailyRentalCost = selectedItem.SubItems[6].Text;
+
+                //TODO: значения в textbox'ах
+            }
+        }
+
+        private void listViewEmployees_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && listViewEmployees.SelectedItems.Count > 0)
+            {
+                if (MessageBox.Show("Вы уверены, что хотите удалить эту запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    // Получите идентификатор выбранной записи
+                    int employeeID = Convert.ToInt32(listViewEmployees.SelectedItems[0].SubItems[0].Text);
+
+                    // Выполните SQL-запрос для удаления записи из базы данных
+                    using (NpgsqlConnection connection = DB.GetConnection())
+                    {
+                        connection.Open();
+                        string deleteQuery = "DELETE FROM Employees WHERE EmployeeID = @employeeID";
+                        using (NpgsqlCommand command = new NpgsqlCommand(deleteQuery, connection))
+                        {
+                            command.Parameters.AddWithValue("@employeeID", employeeID);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+
+                    // Перезагрузите данные в таблице
+                    LoadEmployeesData();
+                }
+            }
+        }
     }
 }

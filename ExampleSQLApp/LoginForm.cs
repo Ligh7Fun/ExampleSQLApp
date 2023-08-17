@@ -227,7 +227,7 @@ namespace ExampleSQLApp
 
             if (CheckCredentials(username, password))
             {
-                MessageBox.Show("Авторизация выполнена", "Авторизация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //MessageBox.Show("Авторизация выполнена", "Авторизация", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 // Показываем MainForm и закрываем текущую форму
                 MainForm mainForm = new MainForm();
                 mainForm.Show();

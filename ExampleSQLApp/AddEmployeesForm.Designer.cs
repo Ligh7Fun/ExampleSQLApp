@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             MainPanel = new Panel();
             TerminationDateField = new DateTimePicker();
             HireDateField = new DateTimePicker();
@@ -46,7 +45,6 @@
             TopPanel = new Panel();
             CloseButton = new Label();
             TitleLabel = new Label();
-            TimerCreateTable = new System.Windows.Forms.Timer(components);
             MainPanel.SuspendLayout();
             TopPanel.SuspendLayout();
             SuspendLayout();
@@ -73,7 +71,7 @@
             MainPanel.Name = "MainPanel";
             MainPanel.Size = new Size(800, 450);
             MainPanel.TabIndex = 2;
-            MainPanel.Paint += MainPanel_Paint;
+
             // 
             // TerminationDateField
             // 
@@ -82,7 +80,7 @@
             TerminationDateField.Name = "TerminationDateField";
             TerminationDateField.Size = new Size(256, 34);
             TerminationDateField.TabIndex = 19;
-            TerminationDateField.ValueChanged += TerminationDateField_ValueChanged;
+
             // 
             // HireDateField
             // 
@@ -91,7 +89,7 @@
             HireDateField.Name = "HireDateField";
             HireDateField.Size = new Size(256, 34);
             HireDateField.TabIndex = 18;
-            HireDateField.ValueChanged += HireDateField_ValueChanged;
+
             // 
             // BirthDateField
             // 
@@ -100,7 +98,7 @@
             BirthDateField.Name = "BirthDateField";
             BirthDateField.Size = new Size(256, 34);
             BirthDateField.TabIndex = 15;
-            BirthDateField.ValueChanged += BirthDateField_ValueChanged;
+
             // 
             // PhoneNumberField
             // 
@@ -109,7 +107,7 @@
             PhoneNumberField.Name = "PhoneNumberField";
             PhoneNumberField.Size = new Size(232, 34);
             PhoneNumberField.TabIndex = 14;
-            PhoneNumberField.TextChanged += PhoneNumberField_TextChanged;
+
             // 
             // AddressField
             // 
@@ -118,7 +116,7 @@
             AddressField.Name = "AddressField";
             AddressField.Size = new Size(232, 34);
             AddressField.TabIndex = 13;
-            AddressField.TextChanged += AddressField_TextChanged;
+
             // 
             // FullNameField
             // 
@@ -127,7 +125,7 @@
             FullNameField.Name = "FullNameField";
             FullNameField.Size = new Size(232, 34);
             FullNameField.TabIndex = 12;
-            FullNameField.TextChanged += FullNameField_TextChanged;
+
             // 
             // label1
             // 
@@ -138,7 +136,7 @@
             label1.Size = new Size(174, 27);
             label1.TabIndex = 11;
             label1.Text = "Дата увольнения";
-            label1.Click += label1_Click;
+
             // 
             // label2
             // 
@@ -149,7 +147,7 @@
             label2.Size = new Size(125, 27);
             label2.TabIndex = 10;
             label2.Text = "Дата найма";
-            label2.Click += label2_Click;
+
             // 
             // label3
             // 
@@ -160,7 +158,6 @@
             label3.Size = new Size(155, 27);
             label3.TabIndex = 9;
             label3.Text = "Дата рождения";
-            label3.Click += label3_Click;
             // 
             // LabelPhoneNumber
             // 
@@ -171,7 +168,6 @@
             LabelPhoneNumber.Size = new Size(96, 27);
             LabelPhoneNumber.TabIndex = 8;
             LabelPhoneNumber.Text = "Телефон";
-            LabelPhoneNumber.Click += LabelPhoneNumber_Click;
             // 
             // LabelAddress
             // 
@@ -182,7 +178,6 @@
             LabelAddress.Size = new Size(68, 27);
             LabelAddress.TabIndex = 7;
             LabelAddress.Text = "Адрес";
-            LabelAddress.Click += LabelAddress_Click;
             // 
             // LabelFullName
             // 
@@ -193,7 +188,6 @@
             LabelFullName.Size = new Size(53, 27);
             LabelFullName.TabIndex = 6;
             LabelFullName.Text = "ФИО";
-            LabelFullName.Click += LabelFullName_Click;
             // 
             // AddButton
             // 
@@ -223,7 +217,6 @@
             TopPanel.Name = "TopPanel";
             TopPanel.Size = new Size(800, 65);
             TopPanel.TabIndex = 0;
-            TopPanel.Paint += TopPanel_Paint;
             // 
             // CloseButton
             // 
@@ -249,14 +242,8 @@
             TitleLabel.TabIndex = 0;
             TitleLabel.Text = "Добавление сотрудника";
             TitleLabel.TextAlign = ContentAlignment.MiddleCenter;
-            TitleLabel.Click += TitleLabel_Click;
             TitleLabel.MouseDown += TitleLabel_MouseDown;
             TitleLabel.MouseMove += TitleLabel_MouseMove;
-            // 
-            // TimerCreateTable
-            // 
-            TimerCreateTable.Interval = 10000;
-            TimerCreateTable.Tick += TimerCreateTable_Tick;
             // 
             // AddEmployeesForm
             // 
@@ -282,7 +269,6 @@
         private Panel TopPanel;
         private Label CloseButton;
         private Label TitleLabel;
-        private System.Windows.Forms.Timer TimerCreateTable;
         private Label label1;
         private Label label2;
         private Label label3;

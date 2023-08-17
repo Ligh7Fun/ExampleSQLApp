@@ -203,7 +203,6 @@
         private PictureBox PasswordImg;
         private TextBox LoginField;
         private Button EnterButton;
-        private ToolTip toolTip1;
         private System.Windows.Forms.Timer TimerCreateTable;
         private Label LabelMessage;
     }
