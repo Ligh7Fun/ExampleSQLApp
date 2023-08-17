@@ -13,6 +13,21 @@ namespace ExampleSQLApp
 {
     public partial class LoginForm : Form
     {
+        public LoginForm()
+        {
+            InitializeComponent();
+            StartPosition = FormStartPosition.CenterScreen;
+            // Set the size of the password field
+            this.PassField.AutoSize = false;
+            this.PassField.Size = new Size(300, 64);
+
+            // Set the size of the username field
+            this.LoginField.AutoSize = false;
+            this.LoginField.Size = new Size(300, 64);
+            TimerCreateTable.Start();
+            LoadTablesIfNeeded();
+
+        }
 
         private void LoadTablesIfNeeded()
         {
@@ -163,27 +178,13 @@ namespace ExampleSQLApp
             catch (Exception ex)
             {
                 LabelMessage.Text = "Ошибка: " + ex.Message;
+                MessageBox.Show("Ошибка: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-        public LoginForm()
-        {
-            InitializeComponent();
-            StartPosition = FormStartPosition.CenterScreen;
-            // Set the size of the password field
-            this.PassField.AutoSize = false;
-            this.PassField.Size = new Size(300, 64);
-
-            // Set the size of the username field
-            this.LoginField.AutoSize = false;
-            this.LoginField.Size = new Size(300, 64);
-            TimerCreateTable.Start();
-            LoadTablesIfNeeded();
-
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Application.Exit();
         }
 
         private void CloseButton_MouseEnter(object sender, EventArgs e)
@@ -226,11 +227,11 @@ namespace ExampleSQLApp
 
             if (CheckCredentials(username, password))
             {
-                // Показываем TableForm и закрываем текущую форму
-                //TableForm tableForm = new TableForm();
-                //ableForm.Show();
-                //this.Hide();
                 MessageBox.Show("Авторизация выполнена", "Авторизация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Показываем MainForm и закрываем текущую форму
+                MainForm mainForm = new MainForm();
+                mainForm.Show();
+                this.Hide();
             }
             else
             {

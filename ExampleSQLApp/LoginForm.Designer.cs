@@ -82,7 +82,7 @@
             // PassField
             // 
             PassField.Font = new Font("Segoe UI", 28F, FontStyle.Regular, GraphicsUnit.Point);
-            PassField.Location = new Point(95, 204);
+            PassField.Location = new Point(95, 197);
             PassField.Name = "PassField";
             PassField.PasswordChar = '#';
             PassField.PlaceholderText = "Пароль";
@@ -92,7 +92,7 @@
             // PasswordImg
             // 
             PasswordImg.Image = Properties.Resources._lock;
-            PasswordImg.Location = new Point(25, 204);
+            PasswordImg.Location = new Point(25, 197);
             PasswordImg.Name = "PasswordImg";
             PasswordImg.Size = new Size(64, 64);
             PasswordImg.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -102,7 +102,7 @@
             // LoginField
             // 
             LoginField.Font = new Font("Segoe UI", 28F, FontStyle.Regular, GraphicsUnit.Point);
-            LoginField.Location = new Point(95, 116);
+            LoginField.Location = new Point(95, 109);
             LoginField.Multiline = true;
             LoginField.Name = "LoginField";
             LoginField.PlaceholderText = "Пользователь";
@@ -112,7 +112,7 @@
             // UserImg
             // 
             UserImg.Image = Properties.Resources.user;
-            UserImg.Location = new Point(25, 116);
+            UserImg.Location = new Point(25, 109);
             UserImg.Name = "UserImg";
             UserImg.Size = new Size(64, 64);
             UserImg.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -127,7 +127,7 @@
             TopPanel.Dock = DockStyle.Top;
             TopPanel.Location = new Point(0, 0);
             TopPanel.Name = "TopPanel";
-            TopPanel.Size = new Size(423, 100);
+            TopPanel.Size = new Size(423, 65);
             TopPanel.TabIndex = 0;
             // 
             // CloseButton
@@ -152,7 +152,7 @@
             TitleLabel.ForeColor = Color.Salmon;
             TitleLabel.Location = new Point(0, 0);
             TitleLabel.Name = "TitleLabel";
-            TitleLabel.Size = new Size(423, 100);
+            TitleLabel.Size = new Size(423, 65);
             TitleLabel.TabIndex = 0;
             TitleLabel.Text = "Авторизация";
             TitleLabel.TextAlign = ContentAlignment.MiddleCenter;
