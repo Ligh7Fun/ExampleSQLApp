@@ -18,6 +18,7 @@ namespace ExampleSQLApp
         {
             InitializeComponent();
             this.mainForm = mainForm;
+            TerminationDateField.Value = DateTimePicker.MinimumDateTime;
             TerminationDateField.CustomFormat = " ";
             TerminationDateField.Format = DateTimePickerFormat.Custom;
         }
@@ -50,7 +51,13 @@ namespace ExampleSQLApp
             string address = AddressField.Text;
             string phoneNumber = PhoneNumberField.Text;
             DateTime hireDate = HireDateField.Value;
-            DateTime terminationDate = TerminationDateField.Value;
+            //DateTime terminationDate = TerminationDateField.Value;
+            DateTime? terminationDate = null;
+
+            if (TerminationDateField.Value != DateTimePicker.MinimumDateTime)
+            {
+                terminationDate = TerminationDateField.Value;
+            }
 
 
             if (fullName == string.Empty || address == string.Empty || phoneNumber == string.Empty)
@@ -77,12 +84,13 @@ namespace ExampleSQLApp
                     command.Parameters.AddWithValue("@address", address);
                     command.Parameters.AddWithValue("@phoneNumber", phoneNumber);
                     command.Parameters.AddWithValue("@hireDate", hireDate);
-                    command.Parameters.AddWithValue("@terminationDate", terminationDate);
+                    command.Parameters.AddWithValue("@terminationDate", terminationDate.HasValue ? (object)terminationDate.Value : DBNull.Value);
+
 
                     // Выполняем запрос
                     command.ExecuteNonQuery();
 
-                    MessageBox.Show("Сотрудник успешно добавлен.");
+                    //MessageBox.Show("Сотрудник успешно добавлен.");
                 }
             }
 

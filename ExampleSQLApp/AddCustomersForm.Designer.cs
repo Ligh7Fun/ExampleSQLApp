@@ -1,6 +1,6 @@
 ﻿namespace ExampleSQLApp
 {
-    partial class AddEmployeesForm
+    partial class AddCustomersForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,15 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            MainPanel = new Panel();
-            TerminationDateField = new DateTimePicker();
-            HireDateField = new DateTimePicker();
+            TitleLabel = new Label();
+            RegistrationDateField = new DateTimePicker();
             BirthDateField = new DateTimePicker();
             PhoneNumberField = new TextBox();
             AddressField = new TextBox();
             FullNameField = new TextBox();
-            LabelTerminationDate = new Label();
-            LabelHireDate = new Label();
+            LabelRegistrationDate = new Label();
             LabelBirthDate = new Label();
             LabelPhoneNumber = new Label();
             LabelAddress = new Label();
@@ -44,56 +42,37 @@
             AddButton = new Button();
             TopPanel = new Panel();
             CloseButton = new Label();
-            TitleLabel = new Label();
-            MainPanel.SuspendLayout();
+            MainPanel = new Panel();
             TopPanel.SuspendLayout();
+            MainPanel.SuspendLayout();
             SuspendLayout();
             // 
-            // MainPanel
+            // TitleLabel
             // 
-            MainPanel.BackColor = Color.Teal;
-            MainPanel.Controls.Add(TerminationDateField);
-            MainPanel.Controls.Add(HireDateField);
-            MainPanel.Controls.Add(BirthDateField);
-            MainPanel.Controls.Add(PhoneNumberField);
-            MainPanel.Controls.Add(AddressField);
-            MainPanel.Controls.Add(FullNameField);
-            MainPanel.Controls.Add(LabelTerminationDate);
-            MainPanel.Controls.Add(LabelHireDate);
-            MainPanel.Controls.Add(LabelBirthDate);
-            MainPanel.Controls.Add(LabelPhoneNumber);
-            MainPanel.Controls.Add(LabelAddress);
-            MainPanel.Controls.Add(LabelFullName);
-            MainPanel.Controls.Add(AddButton);
-            MainPanel.Controls.Add(TopPanel);
-            MainPanel.Dock = DockStyle.Fill;
-            MainPanel.Location = new Point(0, 0);
-            MainPanel.Name = "MainPanel";
-            MainPanel.Size = new Size(800, 450);
-            MainPanel.TabIndex = 2;
+            TitleLabel.Dock = DockStyle.Fill;
+            TitleLabel.Font = new Font("Comic Sans MS", 32F, FontStyle.Bold, GraphicsUnit.Point);
+            TitleLabel.ForeColor = Color.Salmon;
+            TitleLabel.Location = new Point(0, 0);
+            TitleLabel.Name = "TitleLabel";
+            TitleLabel.Size = new Size(800, 65);
+            TitleLabel.TabIndex = 0;
+            TitleLabel.Text = "Добавление клиента";
+            TitleLabel.TextAlign = ContentAlignment.MiddleCenter;
+            TitleLabel.MouseDown += TitleLabel_MouseDown;
+            TitleLabel.MouseMove += TitleLabel_MouseMove;
             // 
-            // TerminationDateField
+            // RegistrationDateField
             // 
-            TerminationDateField.Enabled = false;
-            TerminationDateField.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            TerminationDateField.Location = new Point(497, 318);
-            TerminationDateField.Name = "TerminationDateField";
-            TerminationDateField.Size = new Size(256, 34);
-            TerminationDateField.TabIndex = 19;
-            TerminationDateField.Value = new DateTime(2023, 8, 18, 12, 48, 0, 0);
-            // 
-            // HireDateField
-            // 
-            HireDateField.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            HireDateField.Location = new Point(497, 217);
-            HireDateField.Name = "HireDateField";
-            HireDateField.Size = new Size(256, 34);
-            HireDateField.TabIndex = 18;
+            RegistrationDateField.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            RegistrationDateField.Location = new Point(499, 318);
+            RegistrationDateField.Name = "RegistrationDateField";
+            RegistrationDateField.Size = new Size(256, 34);
+            RegistrationDateField.TabIndex = 18;
             // 
             // BirthDateField
             // 
             BirthDateField.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            BirthDateField.Location = new Point(497, 124);
+            BirthDateField.Location = new Point(499, 225);
             BirthDateField.Name = "BirthDateField";
             BirthDateField.Size = new Size(256, 34);
             BirthDateField.TabIndex = 15;
@@ -122,31 +101,21 @@
             FullNameField.Size = new Size(232, 34);
             FullNameField.TabIndex = 12;
             // 
-            // LabelTerminationDate
+            // LabelRegistrationDate
             // 
-            LabelTerminationDate.AutoSize = true;
-            LabelTerminationDate.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            LabelTerminationDate.Location = new Point(497, 288);
-            LabelTerminationDate.Name = "LabelTerminationDate";
-            LabelTerminationDate.Size = new Size(174, 27);
-            LabelTerminationDate.TabIndex = 11;
-            LabelTerminationDate.Text = "Дата увольнения";
-            // 
-            // LabelHireDate
-            // 
-            LabelHireDate.AutoSize = true;
-            LabelHireDate.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            LabelHireDate.Location = new Point(497, 187);
-            LabelHireDate.Name = "LabelHireDate";
-            LabelHireDate.Size = new Size(125, 27);
-            LabelHireDate.TabIndex = 10;
-            LabelHireDate.Text = "Дата найма";
+            LabelRegistrationDate.AutoSize = true;
+            LabelRegistrationDate.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelRegistrationDate.Location = new Point(499, 288);
+            LabelRegistrationDate.Name = "LabelRegistrationDate";
+            LabelRegistrationDate.Size = new Size(184, 27);
+            LabelRegistrationDate.TabIndex = 10;
+            LabelRegistrationDate.Text = "Дата регистрации";
             // 
             // LabelBirthDate
             // 
             LabelBirthDate.AutoSize = true;
             LabelBirthDate.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            LabelBirthDate.Location = new Point(497, 94);
+            LabelBirthDate.Location = new Point(499, 195);
             LabelBirthDate.Name = "LabelBirthDate";
             LabelBirthDate.Size = new Size(155, 27);
             LabelBirthDate.TabIndex = 9;
@@ -198,7 +167,6 @@
             AddButton.TabIndex = 5;
             AddButton.Text = "Добавить";
             AddButton.UseVisualStyleBackColor = false;
-            AddButton.Click += AddButton_Click;
             // 
             // TopPanel
             // 
@@ -224,55 +192,60 @@
             CloseButton.Text = "X";
             CloseButton.Click += CloseButton_Click;
             // 
-            // TitleLabel
+            // MainPanel
             // 
-            TitleLabel.Dock = DockStyle.Fill;
-            TitleLabel.Font = new Font("Comic Sans MS", 32F, FontStyle.Bold, GraphicsUnit.Point);
-            TitleLabel.ForeColor = Color.Salmon;
-            TitleLabel.Location = new Point(0, 0);
-            TitleLabel.Name = "TitleLabel";
-            TitleLabel.Size = new Size(800, 65);
-            TitleLabel.TabIndex = 0;
-            TitleLabel.Text = "Добавление сотрудника";
-            TitleLabel.TextAlign = ContentAlignment.MiddleCenter;
-            TitleLabel.MouseDown += TitleLabel_MouseDown;
-            TitleLabel.MouseMove += TitleLabel_MouseMove;
+            MainPanel.BackColor = Color.Teal;
+            MainPanel.Controls.Add(RegistrationDateField);
+            MainPanel.Controls.Add(BirthDateField);
+            MainPanel.Controls.Add(PhoneNumberField);
+            MainPanel.Controls.Add(AddressField);
+            MainPanel.Controls.Add(FullNameField);
+            MainPanel.Controls.Add(LabelRegistrationDate);
+            MainPanel.Controls.Add(LabelBirthDate);
+            MainPanel.Controls.Add(LabelPhoneNumber);
+            MainPanel.Controls.Add(LabelAddress);
+            MainPanel.Controls.Add(LabelFullName);
+            MainPanel.Controls.Add(AddButton);
+            MainPanel.Controls.Add(TopPanel);
+            MainPanel.Dock = DockStyle.Fill;
+            MainPanel.Location = new Point(0, 0);
+            MainPanel.Name = "MainPanel";
+            MainPanel.Size = new Size(800, 450);
+            MainPanel.TabIndex = 3;
             // 
-            // AddEmployeesForm
+            // AddCustomersForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(MainPanel);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "AddEmployeesForm";
+            Name = "AddCustomersForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "AddEmployeesForm";
-            MainPanel.ResumeLayout(false);
-            MainPanel.PerformLayout();
+            Text = "AddCustomersForm";
             TopPanel.ResumeLayout(false);
             TopPanel.PerformLayout();
+            MainPanel.ResumeLayout(false);
+            MainPanel.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Panel MainPanel;
-        private Button AddButton;
-        private Panel TopPanel;
-        private Label CloseButton;
         private Label TitleLabel;
-        private Label LabelTerminationDate;
-        private Label LabelHireDate;
-        private Label LabelBirthDate;
-        private Label LabelPhoneNumber;
-        private Label LabelAddress;
-        private Label LabelFullName;
-        private DateTimePicker TerminationDateField;
-        private DateTimePicker HireDateField;
+        private DateTimePicker RegistrationDateField;
         private DateTimePicker BirthDateField;
         private TextBox PhoneNumberField;
         private TextBox AddressField;
         private TextBox FullNameField;
+        private Label LabelRegistrationDate;
+        private Label LabelBirthDate;
+        private Label LabelPhoneNumber;
+        private Label LabelAddress;
+        private Label LabelFullName;
+        private Button AddButton;
+        private Panel TopPanel;
+        private Label CloseButton;
+        private Panel MainPanel;
     }
 }

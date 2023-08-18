@@ -41,8 +41,8 @@ namespace ExampleSQLApp
                     {
                         while (reader.Read())
                         {
-                            string fullName = reader.GetString(1);
-                            ComboBoxMovie.Items.Add(fullName);
+                            string fullName = reader.GetString(0);
+                            ComboBoxCustomer.Items.Add(fullName);
                         }
                     }
                 }
@@ -109,8 +109,10 @@ namespace ExampleSQLApp
         private int GetIDForValue(string tableName, string columnName, string value, NpgsqlConnection connection)
         {
             int id = -1;
+            string idColumnName = tableName.Substring(0, tableName.Length - 1) + "ID";
+            string selectQuery = $"SELECT {idColumnName} FROM {tableName} WHERE {columnName} = @value";
 
-            string selectQuery = $"SELECT {columnName} FROM {tableName} WHERE {columnName} = @value";
+
             using (NpgsqlCommand command = new NpgsqlCommand(selectQuery, connection))
             {
                 command.Parameters.AddWithValue("@value", value);

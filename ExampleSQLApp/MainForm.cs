@@ -19,7 +19,14 @@ namespace ExampleSQLApp
         {
             InitializeComponent();
             //TabControl.SelectedIndexChanged += new EventHandler(TabControl_SelectedIndexChanged);
+            TerminationDateField.CustomFormat = " ";
+            TerminationDateField.Format = DateTimePickerFormat.Custom;
 
+            BirthDateField.CustomFormat = " ";
+            BirthDateField.Format = DateTimePickerFormat.Custom;
+
+            HireDateField.CustomFormat = " ";
+            HireDateField.Format = DateTimePickerFormat.Custom;
             LoadEmployeesData();
         }
 
@@ -100,7 +107,7 @@ namespace ExampleSQLApp
                 connection.Open();
 
                 // Выполнение SELECT запроса
-                string selectQuery = "SELECT * FROM Movies";
+                string selectQuery = "SELECT * FROM Movies  ORDER BY MovieID";
                 using (NpgsqlCommand command = new NpgsqlCommand(selectQuery, connection))
                 {
                     using (NpgsqlDataReader reader = command.ExecuteReader())
@@ -159,7 +166,7 @@ namespace ExampleSQLApp
                 connection.Open();
 
                 // Выполнение SELECT запроса
-                string selectQuery = "SELECT * FROM Employees";
+                string selectQuery = "SELECT * FROM Employees ORDER BY EmployeeID";
                 using (NpgsqlCommand command = new NpgsqlCommand(selectQuery, connection))
                 {
                     using (NpgsqlDataReader reader = command.ExecuteReader())
@@ -174,6 +181,8 @@ namespace ExampleSQLApp
                             string phoneNumber = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
                             DateTime hireDate = reader.GetDateTime(5);
                             DateTime terminationDate = reader.IsDBNull(6) ? DateTime.MinValue : reader.GetDateTime(6);
+                            // Если дата увольнения не указана, то отображаем пустую строку
+                            string terminationDateStr = terminationDate == DateTime.MinValue ? "" : terminationDate.ToShortDateString();
 
                             ListViewItem item = new ListViewItem(employeeID.ToString());
                             item.SubItems.Add(fullName);
@@ -181,7 +190,7 @@ namespace ExampleSQLApp
                             item.SubItems.Add(address);
                             item.SubItems.Add(phoneNumber);
                             item.SubItems.Add(hireDate.ToShortDateString());
-                            item.SubItems.Add(terminationDate.ToShortDateString());
+                            item.SubItems.Add(terminationDateStr);
 
                             listViewEmployees.Items.Add(item);
                         }
@@ -204,7 +213,6 @@ namespace ExampleSQLApp
             listViewCustomers.Columns.Add("Дата рождения");
             listViewCustomers.Columns.Add("Адрес");
             listViewCustomers.Columns.Add("Телефон");
-            listViewCustomers.Columns.Add("Дата найма");
             listViewCustomers.Columns.Add("Дата регистрации");
 
             foreach (ColumnHeader column in listViewCustomers.Columns)
@@ -218,7 +226,7 @@ namespace ExampleSQLApp
                 connection.Open();
 
                 // Выполнение SELECT запроса
-                string selectQuery = "SELECT * FROM Customers";
+                string selectQuery = "SELECT * FROM Customers ORDER BY CustomerID";
                 using (NpgsqlCommand command = new NpgsqlCommand(selectQuery, connection))
                 {
                     using (NpgsqlDataReader reader = command.ExecuteReader())
@@ -275,7 +283,13 @@ namespace ExampleSQLApp
                 connection.Open();
 
                 // Выполнение SELECT запроса
-                string selectQuery = "SELECT * FROM Rentals";
+                string selectQuery = "SELECT RentalID, Customers.FullName, Employees.FullName, Movies.Title, RentalDate, ReturnDate " +
+                                     "FROM Rentals " +
+                                     "INNER JOIN Customers ON Rentals.CustomerID = Customers.CustomerID " +
+                                     "INNER JOIN Employees ON Rentals.EmployeeID = Employees.EmployeeID " +
+                                     "INNER JOIN Movies ON Rentals.MovieID = Movies.MovieID " +
+                                     "ORDER BY RentalID";
+
                 using (NpgsqlCommand command = new NpgsqlCommand(selectQuery, connection))
                 {
                     using (NpgsqlDataReader reader = command.ExecuteReader())
@@ -284,16 +298,16 @@ namespace ExampleSQLApp
                         while (reader.Read())
                         {
                             int rentalID = reader.GetInt32(0);
-                            int customerID = reader.GetInt32(1);
-                            int employeeID = reader.GetInt32(2);
-                            int movieID = reader.GetInt32(3);
+                            string customerName = reader.GetString(1);
+                            string employeeName = reader.GetString(2);
+                            string movieTitle = reader.GetString(3);
                             DateTime rentalDate = reader.GetDateTime(4);
                             DateTime returnDate = reader.GetDateTime(5);
 
                             ListViewItem item = new ListViewItem(rentalID.ToString());
-                            item.SubItems.Add(customerID.ToString());
-                            item.SubItems.Add(employeeID.ToString());
-                            item.SubItems.Add(movieID.ToString());
+                            item.SubItems.Add(customerName);
+                            item.SubItems.Add(employeeName);
+                            item.SubItems.Add(movieTitle);
                             item.SubItems.Add(rentalDate.ToShortDateString());
                             item.SubItems.Add(returnDate.ToShortDateString());
 
@@ -303,6 +317,7 @@ namespace ExampleSQLApp
                 }
             }
         }
+
 
 
         public void LoadRatingsData()
@@ -331,7 +346,7 @@ namespace ExampleSQLApp
                 connection.Open();
 
                 // Выполнение SELECT запроса
-                string selectQuery = "SELECT * FROM Ratings";
+                string selectQuery = "SELECT * FROM Ratings ORDER BY RatingID";
                 using (NpgsqlCommand command = new NpgsqlCommand(selectQuery, connection))
                 {
                     using (NpgsqlDataReader reader = command.ExecuteReader())
@@ -398,9 +413,9 @@ namespace ExampleSQLApp
             if (listViewEmployees.SelectedItems.Count > 0)
             {
                 ListViewItem selectedItem = listViewEmployees.SelectedItems[0];
-
+                buttonEditEmployees.Enabled = true;
                 // Получаем данные из выбранной строки
-                string employeeID = selectedItem.SubItems[0].Text;
+                //string employeeID = selectedItem.SubItems[0].Text;
                 string fullName = selectedItem.SubItems[1].Text;
                 string birthDate = selectedItem.SubItems[2].Text;
                 string address = selectedItem.SubItems[3].Text;
@@ -409,6 +424,42 @@ namespace ExampleSQLApp
                 string terminationDate = selectedItem.SubItems[6].Text;
 
                 //TODO: значения в textbox'ах
+                FullNameField.Text = fullName;
+                AddressField.Text = address;
+                PhoneNumberField.Text = phoneNumber;
+                if (birthDate != string.Empty)
+                {
+                    BirthDateField.CustomFormat = "";
+                    BirthDateField.Value = Convert.ToDateTime(birthDate);
+                }
+                else
+                {
+                    BirthDateField.CustomFormat = " ";
+                }
+
+                if (hireDate != string.Empty)
+                {
+                    HireDateField.CustomFormat = "";
+                    HireDateField.Value = Convert.ToDateTime(hireDate);
+                }
+                else
+                {
+                    HireDateField.CustomFormat = " ";
+                }
+
+
+                if (terminationDate != string.Empty)
+                {
+                    TerminationDateField.CustomFormat = "";
+                    TerminationDateField.Value = Convert.ToDateTime(terminationDate);
+                }
+                else
+                {
+                    TerminationDateField.CustomFormat = " ";
+                }
+
+
+
             }
         }
 
@@ -469,13 +520,24 @@ namespace ExampleSQLApp
 
         private void listViewEmployees_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && listViewEmployees.SelectedItems.Count > 0)
+
+        }
+
+        private void buttonAddCustomers_Click(object sender, EventArgs e)
+        {
+            AddCustomersForm addCustomersForm = new AddCustomersForm(this);
+            addCustomersForm.ShowDialog();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (listViewEmployees.SelectedItems.Count > 0)
             {
+
+                // Получите идентификатор выбранной записи
+                int employeeID = Convert.ToInt32(listViewEmployees.SelectedItems[0].SubItems[0].Text);
                 if (MessageBox.Show("Вы уверены, что хотите удалить эту запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    // Получите идентификатор выбранной записи
-                    int employeeID = Convert.ToInt32(listViewEmployees.SelectedItems[0].SubItems[0].Text);
-
                     // Выполните SQL-запрос для удаления записи из базы данных
                     using (NpgsqlConnection connection = DB.GetConnection())
                     {
@@ -487,9 +549,65 @@ namespace ExampleSQLApp
                             command.ExecuteNonQuery();
                         }
                     }
+                }
+                // Отобразить данные в таблице
+                LoadEmployeesData();
+            }
+        }
 
-                    // Перезагрузите данные в таблице
-                    LoadEmployeesData();
+        private void buttonAddRatings_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonEditEmployees_Click(object sender, EventArgs e)
+        {
+            if (listViewEmployees.SelectedItems.Count > 0)
+            {
+                // Получение выбранной строки и идентификатора сотрудника
+                ListViewItem selectedItem = listViewEmployees.SelectedItems[0];
+                int employeeID = Int32.Parse(selectedItem.SubItems[0].Text);
+
+                // Получение значений из компонентов ввода
+                string fullName = FullNameField.Text;
+                string address = AddressField.Text;
+                string phoneNumber = PhoneNumberField.Text;
+                DateTime birthDate = BirthDateField.Value;
+                DateTime hireDate = HireDateField.Value;
+                DateTime? terminationDate = TerminationDateField.Value != TerminationDateField.MinDate
+                    ? (DateTime?)TerminationDateField.Value
+                    : null;
+
+                // Подключение к базе данных
+                using (NpgsqlConnection connection = DB.GetConnection())
+                {
+                    connection.Open();
+
+                    // SQL-запрос для обновления данных
+                    string updateQuery = @"
+                        UPDATE Employees
+                        SET FullName = @fullName, Address = @address, PhoneNumber = @phoneNumber,
+                            BirthDate = @birthDate, HireDate = @hireDate, TerminationDate = @terminationDate
+                        WHERE EmployeeID = @employeeID";
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(updateQuery, connection))
+                    {
+                        // Добавление параметров
+                        command.Parameters.AddWithValue("@employeeID", employeeID);
+                        command.Parameters.AddWithValue("@fullName", fullName);
+                        command.Parameters.AddWithValue("@address", address);
+                        command.Parameters.AddWithValue("@phoneNumber", phoneNumber);
+                        command.Parameters.AddWithValue("@birthDate", birthDate);
+                        command.Parameters.AddWithValue("@hireDate", hireDate);
+                        command.Parameters.AddWithValue("@terminationDate", terminationDate.HasValue ? (object)terminationDate.Value : DBNull.Value);
+
+                        // Выполнение запроса
+                        command.ExecuteNonQuery();
+
+                        // Обновление данных в listView
+                        LoadEmployeesData();
+
+                    }
                 }
             }
         }

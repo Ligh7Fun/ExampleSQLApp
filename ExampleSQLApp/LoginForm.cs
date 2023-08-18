@@ -75,52 +75,6 @@ namespace ExampleSQLApp
                         LabelMessage.Text = "Таблица Employees создана или уже существует.";
                     }
 
-                    // Создание таблицы Администраторов, если она не существует
-                    string createAdminsTable = @"
-                        CREATE TABLE IF NOT EXISTS Admins (
-                            AdminID SERIAL PRIMARY KEY,
-                            Username VARCHAR(255) NOT NULL,
-                            Password VARCHAR(255) NOT NULL
-                        );";
-
-                    using (NpgsqlCommand command = new NpgsqlCommand(createAdminsTable, connection))
-                    {
-                        command.ExecuteNonQuery();
-                        LabelMessage.Text = "Таблица Admins создана или уже существует.";
-                    }
-
-                    // Проверка, существует ли учетная запись администратора
-                    string checkAdmin = "SELECT COUNT(*) FROM Admins WHERE Username = @username";
-                    using (NpgsqlCommand command = new NpgsqlCommand(checkAdmin, connection))
-                    {
-                        command.Parameters.AddWithValue("@username", "admin");
-                        int count = Convert.ToInt32(command.ExecuteScalar());
-
-                        if (count == 0)
-                        {
-                            // Добавление учетной записи администратора
-                            string insertAdmin = @"
-                                INSERT INTO Admins (Username, Password)
-                                VALUES (@username, @password);";
-
-                            using (NpgsqlCommand insertCommand = new NpgsqlCommand(insertAdmin, connection))
-                            {
-                                insertCommand.Parameters.AddWithValue("@username", "admin");
-                                insertCommand.Parameters.AddWithValue("@password", "admin");
-                                try
-                                {
-                                    insertCommand.ExecuteNonQuery();
-                                    LabelMessage.Text = "Учетная запись администратора добавлена.";
-                                }
-                                catch (Exception ex)
-                                {
-                                    MessageBox.Show("Ошибка при добавлении учетной записи администратора: " + ex.Message,
-                                        "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                }
-                            }
-                        }
-                    }
-
                     // Создание таблицы Клиентов, если она не существует
                     string createCustomersTable = @"
                         CREATE TABLE IF NOT EXISTS Customers (
@@ -169,6 +123,52 @@ namespace ExampleSQLApp
                     {
                         command.ExecuteNonQuery();
                         LabelMessage.Text = "Таблица Ratings создана или уже существует.";
+                    }
+
+                    // Создание таблицы Администраторов, если она не существует
+                    string createAdminsTable = @"
+                        CREATE TABLE IF NOT EXISTS Admins (
+                            AdminID SERIAL PRIMARY KEY,
+                            Username VARCHAR(255) NOT NULL,
+                            Password VARCHAR(255) NOT NULL
+                        );";
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(createAdminsTable, connection))
+                    {
+                        command.ExecuteNonQuery();
+                        LabelMessage.Text = "Таблица Admins создана или уже существует.";
+                    }
+
+                    // Проверка, существует ли учетная запись администратора
+                    string checkAdmin = "SELECT COUNT(*) FROM Admins WHERE Username = @username";
+                    using (NpgsqlCommand command = new NpgsqlCommand(checkAdmin, connection))
+                    {
+                        command.Parameters.AddWithValue("@username", "admin");
+                        int count = Convert.ToInt32(command.ExecuteScalar());
+
+                        if (count == 0)
+                        {
+                            // Добавление учетной записи администратора
+                            string insertAdmin = @"
+                                INSERT INTO Admins (Username, Password)
+                                VALUES (@username, @password);";
+
+                            using (NpgsqlCommand insertCommand = new NpgsqlCommand(insertAdmin, connection))
+                            {
+                                insertCommand.Parameters.AddWithValue("@username", "admin");
+                                insertCommand.Parameters.AddWithValue("@password", "admin");
+                                try
+                                {
+                                    insertCommand.ExecuteNonQuery();
+                                    LabelMessage.Text = "Учетная запись администратора добавлена.";
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show("Ошибка при добавлении учетной записи администратора: " + ex.Message,
+                                        "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                            }
+                        }
                     }
 
                     connection.Close();
