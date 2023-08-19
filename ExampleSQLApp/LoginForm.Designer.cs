@@ -88,7 +88,6 @@
             PassField.PlaceholderText = "Пароль";
             PassField.Size = new Size(300, 57);
             PassField.TabIndex = 4;
-            PassField.Text = "admin";
             // 
             // PasswordImg
             // 
@@ -109,7 +108,6 @@
             LoginField.PlaceholderText = "Пользователь";
             LoginField.Size = new Size(300, 64);
             LoginField.TabIndex = 2;
-            LoginField.Text = "admin";
             // 
             // UserImg
             // 
