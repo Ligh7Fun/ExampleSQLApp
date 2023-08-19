@@ -92,6 +92,16 @@
             tableLayoutPanel4 = new TableLayoutPanel();
             listViewRentals = new ListView();
             panelRentals = new Panel();
+            RentalReturnDateR = new DateTimePicker();
+            label11 = new Label();
+            RentalStartDateR = new DateTimePicker();
+            label10 = new Label();
+            ComboBoxMovieR = new ComboBox();
+            label9 = new Label();
+            ComboBoxEmployeeR = new ComboBox();
+            label8 = new Label();
+            ComboBoxCustomerR = new ComboBox();
+            label7 = new Label();
             buttonEditRentals = new Button();
             buttonDelRentals = new Button();
             buttonAddRentals = new Button();
@@ -811,6 +821,16 @@
             // 
             // panelRentals
             // 
+            panelRentals.Controls.Add(RentalReturnDateR);
+            panelRentals.Controls.Add(label11);
+            panelRentals.Controls.Add(RentalStartDateR);
+            panelRentals.Controls.Add(label10);
+            panelRentals.Controls.Add(ComboBoxMovieR);
+            panelRentals.Controls.Add(label9);
+            panelRentals.Controls.Add(ComboBoxEmployeeR);
+            panelRentals.Controls.Add(label8);
+            panelRentals.Controls.Add(ComboBoxCustomerR);
+            panelRentals.Controls.Add(label7);
             panelRentals.Controls.Add(buttonEditRentals);
             panelRentals.Controls.Add(buttonDelRentals);
             panelRentals.Controls.Add(buttonAddRentals);
@@ -820,6 +840,99 @@
             panelRentals.Size = new Size(1330, 120);
             panelRentals.TabIndex = 4;
             // 
+            // RentalReturnDateR
+            // 
+            RentalReturnDateR.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            RentalReturnDateR.Location = new Point(1010, 44);
+            RentalReturnDateR.Name = "RentalReturnDateR";
+            RentalReturnDateR.Size = new Size(256, 34);
+            RentalReturnDateR.TabIndex = 29;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label11.Location = new Point(858, 47);
+            label11.Name = "label11";
+            label11.Size = new Size(146, 27);
+            label11.TabIndex = 28;
+            label11.Text = "Дата возврата";
+            // 
+            // RentalStartDateR
+            // 
+            RentalStartDateR.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            RentalStartDateR.Location = new Point(1010, 3);
+            RentalStartDateR.Name = "RentalStartDateR";
+            RentalStartDateR.Size = new Size(256, 34);
+            RentalStartDateR.TabIndex = 27;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label10.Location = new Point(838, 9);
+            label10.Name = "label10";
+            label10.Size = new Size(166, 27);
+            label10.TabIndex = 26;
+            label10.Text = "Дата получения";
+            // 
+            // ComboBoxMovieR
+            // 
+            ComboBoxMovieR.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            ComboBoxMovieR.FormattingEnabled = true;
+            ComboBoxMovieR.Location = new Point(461, 85);
+            ComboBoxMovieR.Name = "ComboBoxMovieR";
+            ComboBoxMovieR.Size = new Size(232, 35);
+            ComboBoxMovieR.TabIndex = 25;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label9.Location = new Point(384, 88);
+            label9.Name = "label9";
+            label9.Size = new Size(71, 27);
+            label9.TabIndex = 24;
+            label9.Text = "Фильм";
+            // 
+            // ComboBoxEmployeeR
+            // 
+            ComboBoxEmployeeR.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            ComboBoxEmployeeR.FormattingEnabled = true;
+            ComboBoxEmployeeR.Location = new Point(461, 44);
+            ComboBoxEmployeeR.Name = "ComboBoxEmployeeR";
+            ComboBoxEmployeeR.Size = new Size(232, 35);
+            ComboBoxEmployeeR.TabIndex = 23;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label8.Location = new Point(347, 47);
+            label8.Name = "label8";
+            label8.Size = new Size(108, 27);
+            label8.TabIndex = 22;
+            label8.Text = "Сотрудник";
+            // 
+            // ComboBoxCustomerR
+            // 
+            ComboBoxCustomerR.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            ComboBoxCustomerR.FormattingEnabled = true;
+            ComboBoxCustomerR.Location = new Point(461, 3);
+            ComboBoxCustomerR.Name = "ComboBoxCustomerR";
+            ComboBoxCustomerR.Size = new Size(232, 35);
+            ComboBoxCustomerR.TabIndex = 21;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label7.Location = new Point(376, 6);
+            label7.Name = "label7";
+            label7.Size = new Size(79, 27);
+            label7.TabIndex = 20;
+            label7.Text = "Клиент";
+            // 
             // buttonEditRentals
             // 
             buttonEditRentals.Location = new Point(3, 39);
@@ -828,6 +941,7 @@
             buttonEditRentals.TabIndex = 7;
             buttonEditRentals.Text = "Изменить аренду";
             buttonEditRentals.UseVisualStyleBackColor = true;
+            buttonEditRentals.Click += buttonEditRentals_Click;
             // 
             // buttonDelRentals
             // 
@@ -837,6 +951,7 @@
             buttonDelRentals.TabIndex = 6;
             buttonDelRentals.Text = "Удалить аренду";
             buttonDelRentals.UseVisualStyleBackColor = true;
+            buttonDelRentals.Click += buttonDelRentals_Click;
             // 
             // buttonAddRentals
             // 
@@ -981,6 +1096,7 @@
             Rentals.ResumeLayout(false);
             tableLayoutPanel4.ResumeLayout(false);
             panelRentals.ResumeLayout(false);
+            panelRentals.PerformLayout();
             Ratings.ResumeLayout(false);
             tableLayoutPanel5.ResumeLayout(false);
             panelRatings.ResumeLayout(false);
@@ -1067,5 +1183,15 @@
         private TextBox DirectorFieldM;
         private TextBox ReleaseYearFieldM;
         private TextBox TitleFieldM;
+        private ComboBox ComboBoxMovieR;
+        private Label label9;
+        private ComboBox ComboBoxEmployeeR;
+        private Label label8;
+        private ComboBox ComboBoxCustomerR;
+        private Label label7;
+        private DateTimePicker RentalStartDateR;
+        private Label label10;
+        private DateTimePicker RentalReturnDateR;
+        private Label label11;
     }
 }

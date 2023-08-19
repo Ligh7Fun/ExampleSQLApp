@@ -21,6 +21,7 @@ namespace ExampleSQLApp
         public MainForm()
         {
             InitializeComponent();
+            LoadEmployeesData();
 
             ButtonsDisable("Employees");
             ButtonsDisable("Customers");
@@ -36,13 +37,18 @@ namespace ExampleSQLApp
 
             HireDateField.CustomFormat = " ";
             HireDateField.Format = DateTimePickerFormat.Custom;
-            LoadEmployeesData();
 
             BirthDateFieldC.CustomFormat = " ";
             BirthDateFieldC.Format = DateTimePickerFormat.Custom;
 
             RegistrationDateFieldC.CustomFormat = " ";
             RegistrationDateFieldC.Format = DateTimePickerFormat.Custom;
+
+            RentalStartDateR.CustomFormat = " ";
+            RentalStartDateR.Format = DateTimePickerFormat.Custom;
+
+            RentalReturnDateR.CustomFormat = " ";
+            RentalReturnDateR.Format = DateTimePickerFormat.Custom;
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
@@ -599,16 +605,85 @@ namespace ExampleSQLApp
             if (listViewRentals.SelectedItems.Count > 0)
             {
                 ListViewItem selectedItem = listViewRentals.SelectedItems[0];
+                ButtonsEnable("Rentals");
 
                 // Получаем данные из выбранной строки
-                string rentalID = selectedItem.SubItems[0].Text;
                 string customer = selectedItem.SubItems[1].Text;
                 string employee = selectedItem.SubItems[2].Text;
                 string movie = selectedItem.SubItems[3].Text;
                 string rentalDate = selectedItem.SubItems[4].Text;
                 string returnDate = selectedItem.SubItems[5].Text;
 
+                ComboBoxCustomerR.Items.Clear();
+                ComboBoxEmployeeR.Items.Clear();
+                ComboBoxMovieR.Items.Clear();
+
+                // Добавляем все элементы из базы в ComboBox
+                using (NpgsqlConnection connection = DB.GetConnection())
+                {
+                    connection.Open();
+
+                    // Запросы для получения всех значений из соответствующих таблиц
+                    string customersQuery = "SELECT FullName FROM Customers";
+                    string employeesQuery = "SELECT FullName FROM Employees";
+                    string moviesQuery = "SELECT Title FROM Movies";
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(customersQuery, connection))
+                    {
+                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                ComboBoxCustomerR.Items.Add(reader.GetString(0));
+                            }
+                        }
+                    }
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(employeesQuery, connection))
+                    {
+                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                ComboBoxEmployeeR.Items.Add(reader.GetString(0));
+                            }
+                        }
+                    }
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(moviesQuery, connection))
+                    {
+                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                ComboBoxMovieR.Items.Add(reader.GetString(0));
+                            }
+                        }
+                    }
+                }
+
+
                 //TODO: значения в textbox'ах
+                // Устанавливаем выбранные значения
+                ComboBoxCustomerR.SelectedItem = customer;
+                ComboBoxEmployeeR.SelectedItem = employee;
+                ComboBoxMovieR.SelectedItem = movie;
+                RentalStartDateR.CustomFormat = "";
+                RentalReturnDateR.CustomFormat = "";
+                RentalStartDateR.Value = Convert.ToDateTime(rentalDate);
+                RentalReturnDateR.Value = Convert.ToDateTime(returnDate);
+            }
+            else
+            {
+                ButtonsDisable("Rentals");
+                ComboBoxCustomerR.Items.Clear();
+                ComboBoxEmployeeR.Items.Clear();
+                ComboBoxMovieR.Items.Clear();
+                ComboBoxCustomerR.Text = string.Empty;
+                ComboBoxEmployeeR.Text = string.Empty;
+                ComboBoxMovieR.Text = string.Empty;
+                RentalStartDateR.CustomFormat = " ";
+                RentalReturnDateR.CustomFormat = " ";
             }
         }
 
@@ -661,35 +736,52 @@ namespace ExampleSQLApp
         {
             if (listViewEmployees.SelectedItems.Count > 0)
             {
-
-                // Получите идентификатор выбранной записи
-                int employeeID = Convert.ToInt32(listViewEmployees.SelectedItems[0].SubItems[0].Text);
-                if (MessageBox.Show("Вы уверены, что хотите удалить эту запись c ID " + employeeID + "?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                try
                 {
-                    // Выполните SQL-запрос для удаления записи из базы данных
-                    using (NpgsqlConnection connection = DB.GetConnection())
+                    // Получите идентификатор выбранной записи
+                    int employeeID = Convert.ToInt32(listViewEmployees.SelectedItems[0].SubItems[0].Text);
+                    if (MessageBox.Show("Вы уверены, что хотите удалить эту запись c ID " + employeeID + "?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        connection.Open();
-                        string deleteQuery = "DELETE FROM Employees WHERE EmployeeID = @employeeID";
-                        using (NpgsqlCommand command = new NpgsqlCommand(deleteQuery, connection))
+                        // Выполните SQL-запрос для удаления записи из базы данных
+                        using (NpgsqlConnection connection = DB.GetConnection())
                         {
-                            command.Parameters.AddWithValue("@employeeID", employeeID);
-                            command.ExecuteNonQuery();
+                            connection.Open();
+                            string deleteQuery = "DELETE FROM Employees WHERE EmployeeID = @employeeID";
+                            using (NpgsqlCommand command = new NpgsqlCommand(deleteQuery, connection))
+                            {
+                                command.Parameters.AddWithValue("@employeeID", employeeID);
+                                command.ExecuteNonQuery();
+                            }
                         }
                     }
                 }
-                // Отобразить данные в таблице
-                LoadEmployeesData();
-                ButtonsDisable("Employees");
-                FullNameField.Text = string.Empty;
-                AddressField.Text = string.Empty;
-                PhoneNumberField.Text = string.Empty;
-                BirthDateField.CustomFormat = " ";
-                HireDateField.CustomFormat = " ";
-                TerminationDateField.CustomFormat = " ";
-                TerminationDateField.Value = TerminationDateField.MinDate;
-                HireDateField.Value = HireDateField.MinDate;
-                TerminationDateField.Value = TerminationDateField.MinDate;
+                catch (NpgsqlException ex)
+                {
+                    if (ex.SqlState == "23503") // Код ошибки для нарушения внешнего ключа
+                    {
+                        MessageBox.Show("Невозможно удалить запись, так как на нее есть ссылки в других таблицах.", "Ошибка удаления", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Произошла ошибка при удалении записи: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                finally
+                {
+                    // Отобразить данные в таблице
+                    LoadEmployeesData();
+                    ButtonsDisable("Employees");
+                    FullNameField.Text = string.Empty;
+                    AddressField.Text = string.Empty;
+                    PhoneNumberField.Text = string.Empty;
+                    BirthDateField.CustomFormat = " ";
+                    HireDateField.CustomFormat = " ";
+                    TerminationDateField.CustomFormat = " ";
+                    TerminationDateField.Value = TerminationDateField.MinDate;
+                    HireDateField.Value = HireDateField.MinDate;
+                    TerminationDateField.Value = TerminationDateField.MinDate;
+                }
+
             }
         }
 
@@ -779,35 +871,52 @@ namespace ExampleSQLApp
         {
             if (listViewCustomers.SelectedItems.Count > 0)
             {
-
-                // Получите идентификатор выбранной записи
-                int customerID = Convert.ToInt32(listViewCustomers.SelectedItems[0].SubItems[0].Text);
-                if (MessageBox.Show("Вы уверены, что хотите удалить эту запись c ID " + customerID + "?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                try
                 {
-                    // Выполните SQL-запрос для удаления записи из базы данных
-                    using (NpgsqlConnection connection = DB.GetConnection())
+                    // Получите идентификатор выбранной записи
+                    int customerID = Convert.ToInt32(listViewCustomers.SelectedItems[0].SubItems[0].Text);
+                    if (MessageBox.Show("Вы уверены, что хотите удалить эту запись c ID " + customerID + "?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        connection.Open();
-                        string deleteQuery = "DELETE FROM Customers WHERE CustomerID = @customerID";
-                        using (NpgsqlCommand command = new NpgsqlCommand(deleteQuery, connection))
+                        // Выполните SQL-запрос для удаления записи из базы данных
+                        using (NpgsqlConnection connection = DB.GetConnection())
                         {
-                            command.Parameters.AddWithValue("@customerID", customerID);
-                            command.ExecuteNonQuery();
+                            connection.Open();
+                            string deleteQuery = "DELETE FROM Customers WHERE CustomerID = @customerID";
+                            using (NpgsqlCommand command = new NpgsqlCommand(deleteQuery, connection))
+                            {
+                                command.Parameters.AddWithValue("@customerID", customerID);
+                                command.ExecuteNonQuery();
+                            }
                         }
                     }
                 }
-                // Отобразить данные в таблице
-                LoadCustomersData();
-                ButtonsDisable("Customers");
-                FullNameField.Text = string.Empty;
-                AddressField.Text = string.Empty;
-                PhoneNumberField.Text = string.Empty;
-                BirthDateField.CustomFormat = " ";
-                HireDateField.CustomFormat = " ";
-                TerminationDateField.CustomFormat = " ";
-                TerminationDateField.Value = TerminationDateField.MinDate;
-                HireDateField.Value = HireDateField.MinDate;
-                TerminationDateField.Value = TerminationDateField.MinDate;
+                catch (NpgsqlException ex)
+                {
+                    if (ex.SqlState == "23503") // Код ошибки для нарушения внешнего ключа
+                    {
+                        MessageBox.Show("Невозможно удалить запись, так как на нее есть ссылки в других таблицах.", "Ошибка удаления", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Произошла ошибка при удалении записи: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                finally
+                {
+                    // Отобразить данные в таблице
+                    LoadCustomersData();
+                    ButtonsDisable("Customers");
+                    FullNameField.Text = string.Empty;
+                    AddressField.Text = string.Empty;
+                    PhoneNumberField.Text = string.Empty;
+                    BirthDateField.CustomFormat = " ";
+                    HireDateField.CustomFormat = " ";
+                    TerminationDateField.CustomFormat = " ";
+                    TerminationDateField.Value = TerminationDateField.MinDate;
+                    HireDateField.Value = HireDateField.MinDate;
+                    TerminationDateField.Value = TerminationDateField.MinDate;
+                }
+
             }
         }
 
@@ -874,33 +983,47 @@ namespace ExampleSQLApp
         {
             if (listViewMovies.SelectedItems.Count > 0)
             {
-
-                // Получите идентификатор выбранной записи
-                int movieID = Convert.ToInt32(listViewMovies.SelectedItems[0].SubItems[0].Text);
-                if (MessageBox.Show("Вы уверены, что хотите удалить эту запись c ID " + movieID + "?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                try
                 {
-                    // Выполните SQL-запрос для удаления записи из базы данных
-                    using (NpgsqlConnection connection = DB.GetConnection())
+                    int movieID = Convert.ToInt32(listViewMovies.SelectedItems[0].SubItems[0].Text);
+                    if (MessageBox.Show("Вы уверены, что хотите удалить эту запись c ID " + movieID + "?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        connection.Open();
-                        string deleteQuery = "DELETE FROM Movies WHERE MovieID = @movieID";
-                        using (NpgsqlCommand command = new NpgsqlCommand(deleteQuery, connection))
+                        using (NpgsqlConnection connection = DB.GetConnection())
                         {
-                            command.Parameters.AddWithValue("@movieID", movieID);
-                            command.ExecuteNonQuery();
+                            connection.Open();
+                            string deleteQuery = "DELETE FROM Movies WHERE MovieID = @movieID";
+                            using (NpgsqlCommand command = new NpgsqlCommand(deleteQuery, connection))
+                            {
+                                command.Parameters.AddWithValue("@movieID", movieID);
+                                command.ExecuteNonQuery();
+                            }
                         }
                     }
                 }
-                ButtonsDisable("Movies");
-                // Отобразить данные в таблице
-                LoadMoviesData();
-                ButtonsDisable("Movies");
-                TitleFieldM.Text = string.Empty;
-                ReleaseYearFieldM.Text = string.Empty;
-                DirectorFieldM.Text = string.Empty;
-                CountryFieldM.Text = string.Empty;
-                DurationFieldM.Text = string.Empty;
-                DailyRentalCostFieldM.Text = string.Empty;
+                catch (NpgsqlException ex)
+                {
+                    if (ex.SqlState == "23503") // Код ошибки для нарушения внешнего ключа
+                    {
+                        MessageBox.Show("Невозможно удалить запись, так как на нее есть ссылки в других таблицах.", "Ошибка удаления", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Произошла ошибка при удалении записи: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                finally
+                {
+                    ButtonsDisable("Movies");
+                    // Отобразить данные в таблице
+                    LoadMoviesData();
+                    ButtonsDisable("Movies");
+                    TitleFieldM.Text = string.Empty;
+                    ReleaseYearFieldM.Text = string.Empty;
+                    DirectorFieldM.Text = string.Empty;
+                    CountryFieldM.Text = string.Empty;
+                    DurationFieldM.Text = string.Empty;
+                    DailyRentalCostFieldM.Text = string.Empty;
+                }
             }
         }
 
@@ -985,6 +1108,129 @@ namespace ExampleSQLApp
                     }
                 }
             }
+        }
+
+        private void buttonDelRentals_Click(object sender, EventArgs e)
+        {
+            if (listViewRentals.SelectedItems.Count > 0)
+            {
+
+                // Получите идентификатор выбранной записи
+                int rentalID = Convert.ToInt32(listViewRentals.SelectedItems[0].SubItems[0].Text);
+                if (MessageBox.Show("Вы уверены, что хотите удалить эту запись c ID " + rentalID + "?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    // Выполните SQL-запрос для удаления записи из базы данных
+                    using (NpgsqlConnection connection = DB.GetConnection())
+                    {
+                        connection.Open();
+                        string deleteQuery = "DELETE FROM Rentals WHERE RentalID = @rentalID";
+                        using (NpgsqlCommand command = new NpgsqlCommand(deleteQuery, connection))
+                        {
+                            command.Parameters.AddWithValue("@rentalID", rentalID);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                }
+                // Отобразить данные в таблице
+                LoadRentalsData();
+                ButtonsDisable("Rentals");
+                /*FullNameField.Text = string.Empty;
+                AddressField.Text = string.Empty;
+                PhoneNumberField.Text = string.Empty;
+                BirthDateField.CustomFormat = " ";
+                HireDateField.CustomFormat = " ";
+                TerminationDateField.CustomFormat = " ";
+                TerminationDateField.Value = TerminationDateField.MinDate;
+                HireDateField.Value = HireDateField.MinDate;
+                TerminationDateField.Value = TerminationDateField.MinDate;*/
+            }
+        }
+        // Метод для получения идентификатора по значению из определенной таблицы и столбца
+        private int GetIDForValue(string tableName, string columnName, string value, NpgsqlConnection connection)
+        {
+            int id = -1;
+            string idColumnName = tableName.Substring(0, tableName.Length - 1) + "ID";
+            string selectQuery = $"SELECT {idColumnName} FROM {tableName} WHERE {columnName} = @value";
+
+
+            using (NpgsqlCommand command = new NpgsqlCommand(selectQuery, connection))
+            {
+                command.Parameters.AddWithValue("@value", value);
+                object result = command.ExecuteScalar();
+                if (result != null)
+                {
+                    id = Convert.ToInt32(result);
+                }
+            }
+
+            return id;
+        }
+
+        private void buttonEditRentals_Click(object sender, EventArgs e)
+        {
+            if (listViewRentals.SelectedItems.Count > 0)
+            {
+                // Получение выбранной строки и идентификатора аренды
+                ListViewItem selectedItem = listViewRentals.SelectedItems[0];
+                int rentalID = Int32.Parse(selectedItem.SubItems[0].Text);
+
+                // Получение значений из компонентов ввода
+                string customer = ComboBoxCustomerR.SelectedItem.ToString();
+                string employee = ComboBoxEmployeeR.SelectedItem.ToString();
+                string movie = ComboBoxMovieR.SelectedItem.ToString();
+                DateTime rentalDate = RentalStartDateR.Value;
+                DateTime returnDate = RentalReturnDateR.Value;
+
+
+                // Подключение к базе данных
+                using (NpgsqlConnection connection = DB.GetConnection())
+                {
+                    connection.Open();
+
+                    // Получение идентификаторов клиента, сотрудника и фильма из базы данных
+                    int customerID = GetIDForValue("Customers", "FullName", customer, connection);
+                    int employeeID = GetIDForValue("Employees", "FullName", employee, connection);
+                    int movieID = GetIDForValue("Movies", "Title", movie, connection);
+
+                    // SQL-запрос для обновления данных
+                    string updateQuery = @"
+                        UPDATE Rentals
+                        SET CustomerID = @customerID, EmployeeID = @employeeID, MovieID = @movieID,
+                            RentalDate = @rentalDate, ReturnDate = @returnDate
+                        WHERE RentalID = @rentalID";
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(updateQuery, connection))
+                    {
+                        // Добавление параметров
+                        command.Parameters.AddWithValue("@rentalID", rentalID);
+                        command.Parameters.AddWithValue("@customerID", customerID);
+                        command.Parameters.AddWithValue("@employeeID", employeeID);
+                        command.Parameters.AddWithValue("@movieID", movieID);
+                        command.Parameters.AddWithValue("@rentalDate", rentalDate);
+                        command.Parameters.AddWithValue("@returnDate", returnDate);
+
+                        // Выполнение запроса
+                        command.ExecuteNonQuery();
+
+                        // Очистка и обновление данных в ComboBox и других компонентах
+                        ComboBoxCustomerR.Items.Clear();
+                        ComboBoxEmployeeR.Items.Clear();
+                        ComboBoxMovieR.Items.Clear();
+                        ComboBoxCustomerR.Text = string.Empty;
+                        ComboBoxEmployeeR.Text = string.Empty;
+                        ComboBoxMovieR.Text = string.Empty;
+                        RentalStartDateR.CustomFormat = " ";
+                        RentalReturnDateR.CustomFormat = " ";
+                        RentalStartDateR.Value = RentalStartDateR.MinDate;
+                        RentalReturnDateR.Value = RentalReturnDateR.MinDate;
+
+                        // Обновление данных в listView
+                        LoadRentalsData();
+                        ButtonsDisable("Rentals");
+                    }
+                }
+            }
+
         }
     }
 }

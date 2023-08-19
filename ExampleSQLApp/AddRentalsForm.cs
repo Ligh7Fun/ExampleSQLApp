@@ -125,6 +125,7 @@ namespace ExampleSQLApp
 
             return id;
         }
+
         //TODO: Проверить после добавления клиентов
         private void AddButton_Click(object sender, EventArgs e)
         {
@@ -172,11 +173,6 @@ namespace ExampleSQLApp
                     //MessageBox.Show("Аренда успешно добавлена.");
                 }
             }
-
-            // Очищаем поля ввода
-            ComboBoxCustomer.Text = string.Empty;
-            ComboBoxEmployee.Text = string.Empty;
-            ComboBoxMovie.Text = string.Empty;
 
             this.Close();
             mainForm.LoadRentalsData();
