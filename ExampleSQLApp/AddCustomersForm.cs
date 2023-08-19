@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -37,6 +38,54 @@ namespace ExampleSQLApp
                 this.Left += e.X - LastPoint.X;
                 this.Top += e.Y - LastPoint.Y;
             }
+        }
+
+        private void AddButton_Click(object sender, EventArgs e)
+        {
+            // Получаем значения из компонентов ввода
+            string fullName = FullNameField.Text;
+            DateTime birthDate = BirthDateField.Value;
+            string address = AddressField.Text;
+            string phoneNumber = PhoneNumberField.Text;
+            DateTime registrationDate = RegistrationDateField.Value;
+
+
+
+            if (fullName == string.Empty || address == string.Empty || phoneNumber == string.Empty)
+            {
+                MessageBox.Show("Все поля обязательны к заполнению.", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Подключение к базе данных
+            using (NpgsqlConnection connection = DB.GetConnection())
+            {
+                connection.Open();
+
+                // SQL-запрос для вставки данных
+                string insertQuery = @"
+                    INSERT INTO Customers (FullName, BirthDate, Address, PhoneNumber, RegistrationDate)
+                    VALUES (@fullName, @birthDate, @address, @phoneNumber, @registrationDate)";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(insertQuery, connection))
+                {
+                    // Добавляем параметры
+                    command.Parameters.AddWithValue("@fullName", fullName);
+                    command.Parameters.AddWithValue("@birthDate", birthDate);
+                    command.Parameters.AddWithValue("@address", address);
+                    command.Parameters.AddWithValue("@phoneNumber", phoneNumber);
+                    command.Parameters.AddWithValue("@registrationDate", registrationDate);
+
+                    // Выполняем запрос
+                    command.ExecuteNonQuery();
+
+                    //MessageBox.Show("Клиент успешно добавлен.");
+                }
+            }
+
+            this.Close();
+            mainForm.LoadCustomersData();
+
         }
     }
 }

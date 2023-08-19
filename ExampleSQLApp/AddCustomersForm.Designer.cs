@@ -167,6 +167,7 @@
             AddButton.TabIndex = 5;
             AddButton.Text = "Добавить";
             AddButton.UseVisualStyleBackColor = false;
+            AddButton.Click += AddButton_Click;
             // 
             // TopPanel
             // 

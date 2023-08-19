@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -28,6 +29,12 @@ namespace ExampleSQLApp
             HireDateField.CustomFormat = " ";
             HireDateField.Format = DateTimePickerFormat.Custom;
             LoadEmployeesData();
+
+            BirthDateFieldC.CustomFormat = " ";
+            BirthDateFieldC.Format = DateTimePickerFormat.Custom;
+
+            RegistrationDateFieldC.CustomFormat = " ";
+            RegistrationDateFieldC.Format = DateTimePickerFormat.Custom;
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
@@ -458,8 +465,18 @@ namespace ExampleSQLApp
                     TerminationDateField.CustomFormat = " ";
                 }
 
-
-
+            }
+            else
+            {
+                FullNameField.Text = string.Empty;
+                AddressField.Text = string.Empty;
+                PhoneNumberField.Text = string.Empty;
+                BirthDateField.CustomFormat = " ";
+                HireDateField.CustomFormat = " ";
+                TerminationDateField.CustomFormat = " ";
+                TerminationDateField.Value = TerminationDateField.MinDate;
+                HireDateField.Value = HireDateField.MinDate;
+                TerminationDateField.Value = TerminationDateField.MinDate;
             }
         }
 
@@ -478,6 +495,23 @@ namespace ExampleSQLApp
                 string registrationDate = selectedItem.SubItems[5].Text;
 
                 //TODO: значения в textbox'ах
+                FullNameFieldC.Text = fullName;
+                AddressFieldC.Text = address;
+                PhoneNumberFieldC.Text = phoneNumber;
+                BirthDateFieldC.CustomFormat = "";
+                RegistrationDateFieldC.CustomFormat = "";
+                BirthDateFieldC.Value = Convert.ToDateTime(birthDate);
+                RegistrationDateFieldC.Value = Convert.ToDateTime(registrationDate);
+            }
+            else
+            {
+                FullNameFieldC.Text = string.Empty;
+                AddressFieldC.Text = string.Empty;
+                PhoneNumberFieldC.Text = string.Empty;
+                BirthDateFieldC.CustomFormat = " ";
+                RegistrationDateFieldC.CustomFormat = " ";
+                BirthDateFieldC.Value = BirthDateFieldC.MinDate;
+                RegistrationDateFieldC.Value = RegistrationDateFieldC.MinDate;
             }
         }
 
@@ -536,7 +570,7 @@ namespace ExampleSQLApp
 
                 // Получите идентификатор выбранной записи
                 int employeeID = Convert.ToInt32(listViewEmployees.SelectedItems[0].SubItems[0].Text);
-                if (MessageBox.Show("Вы уверены, что хотите удалить эту запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show("Вы уверены, что хотите удалить эту запись c ID " + employeeID + "?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     // Выполните SQL-запрос для удаления записи из базы данных
                     using (NpgsqlConnection connection = DB.GetConnection())
@@ -604,11 +638,125 @@ namespace ExampleSQLApp
                         // Выполнение запроса
                         command.ExecuteNonQuery();
 
+                        FullNameField.Text = string.Empty;
+                        AddressField.Text = string.Empty;
+                        PhoneNumberField.Text = string.Empty;
+                        BirthDateField.CustomFormat = " ";
+                        HireDateField.CustomFormat = " ";
+                        TerminationDateField.CustomFormat = " ";
+                        TerminationDateField.Value = TerminationDateField.MinDate;
+                        HireDateField.Value = HireDateField.MinDate;
+                        TerminationDateField.Value = TerminationDateField.MinDate;
+
                         // Обновление данных в listView
                         LoadEmployeesData();
 
                     }
                 }
+            }
+            else
+            {
+                MessageBox.Show("Не выбрано ни одной записи");
+            }
+        }
+
+        private void TerminationDateField_ValueChanged(object sender, EventArgs e)
+        {
+            TerminationDateField.CustomFormat = "";
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            TerminationDateField.Value = TerminationDateField.MinDate;
+            TerminationDateField.CustomFormat = " ";
+        }
+
+        private void buttonDelCustomers_Click(object sender, EventArgs e)
+        {
+            if (listViewCustomers.SelectedItems.Count > 0)
+            {
+
+                // Получите идентификатор выбранной записи
+                int customerID = Convert.ToInt32(listViewCustomers.SelectedItems[0].SubItems[0].Text);
+                if (MessageBox.Show("Вы уверены, что хотите удалить эту запись c ID " + customerID + "?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    // Выполните SQL-запрос для удаления записи из базы данных
+                    using (NpgsqlConnection connection = DB.GetConnection())
+                    {
+                        connection.Open();
+                        string deleteQuery = "DELETE FROM Customers WHERE CustomerID = @customerID";
+                        using (NpgsqlCommand command = new NpgsqlCommand(deleteQuery, connection))
+                        {
+                            command.Parameters.AddWithValue("@customerID", customerID);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                }
+                // Отобразить данные в таблице
+                LoadCustomersData();
+            }
+        }
+
+        private void buttonEditCustomers_Click(object sender, EventArgs e)
+        {
+            if (listViewCustomers.SelectedItems.Count > 0)
+            {
+                // Получение выбранной строки и идентификатора сотрудника
+                ListViewItem selectedItem = listViewCustomers.SelectedItems[0];
+                int customerID = Int32.Parse(selectedItem.SubItems[0].Text);
+
+                // Получение значений из компонентов ввода
+                string fullName = FullNameFieldC.Text;
+                string address = AddressFieldC.Text;
+                string phoneNumber = PhoneNumberFieldC.Text;
+                DateTime birthDate = BirthDateFieldC.Value;
+                DateTime registrationDate = RegistrationDateFieldC.Value;
+
+
+                // Подключение к базе данных
+                using (NpgsqlConnection connection = DB.GetConnection())
+                {
+                    connection.Open();
+
+                    // SQL-запрос для обновления данных
+                    string updateQuery = @"
+                        UPDATE Customers
+                        SET FullName = @fullName, Address = @address, PhoneNumber = @phoneNumber,
+                            BirthDate = @birthDate, RegistrationDate = @registrationDate
+                        WHERE CustomerID = @customerID";
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(updateQuery, connection))
+                    {
+                        // Добавление параметров
+                        command.Parameters.AddWithValue("@customerID", customerID);
+                        command.Parameters.AddWithValue("@fullName", fullName);
+                        command.Parameters.AddWithValue("@address", address);
+                        command.Parameters.AddWithValue("@phoneNumber", phoneNumber);
+                        command.Parameters.AddWithValue("@birthDate", birthDate);
+                        command.Parameters.AddWithValue("@registrationDate", registrationDate);
+
+
+                        // Выполнение запроса
+                        command.ExecuteNonQuery();
+
+                        FullNameFieldC.Text = string.Empty;
+                        AddressFieldC.Text = string.Empty;
+                        PhoneNumberFieldC.Text = string.Empty;
+                        BirthDateFieldC.CustomFormat = " ";
+                        RegistrationDateFieldC.CustomFormat = " ";
+                        BirthDateFieldC.Value = BirthDateFieldC.MinDate;
+                        RegistrationDateFieldC.Value = RegistrationDateFieldC.MinDate;
+
+                        // Обновление данных в listView
+                        LoadCustomersData();
+
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Не выбрано ни одной записи");
+
             }
         }
     }

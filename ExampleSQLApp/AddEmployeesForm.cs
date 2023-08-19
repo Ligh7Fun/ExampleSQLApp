@@ -51,7 +51,6 @@ namespace ExampleSQLApp
             string address = AddressField.Text;
             string phoneNumber = PhoneNumberField.Text;
             DateTime hireDate = HireDateField.Value;
-            //DateTime terminationDate = TerminationDateField.Value;
             DateTime? terminationDate = null;
 
             if (TerminationDateField.Value != DateTimePicker.MinimumDateTime)
@@ -94,10 +93,6 @@ namespace ExampleSQLApp
                 }
             }
 
-            // Очищаем поля ввода
-            FullNameField.Clear();
-            AddressField.Clear();
-            PhoneNumberField.Clear();
             this.Close();
             mainForm.LoadEmployeesData();
         }

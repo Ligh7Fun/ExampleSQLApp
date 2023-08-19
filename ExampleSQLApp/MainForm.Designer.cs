@@ -36,6 +36,7 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             listViewEmployees = new ListView();
             panelEmployees = new Panel();
+            buttonClear = new Button();
             TerminationDateField = new DateTimePicker();
             HireDateField = new DateTimePicker();
             BirthDateField = new DateTimePicker();
@@ -55,6 +56,16 @@
             tableLayoutPanel2 = new TableLayoutPanel();
             listViewCustomers = new ListView();
             panelCustomers = new Panel();
+            RegistrationDateFieldC = new DateTimePicker();
+            BirthDateFieldC = new DateTimePicker();
+            LabelRegistrationDateC = new Label();
+            LabelBirthDateC = new Label();
+            LabelPhoneNumberC = new Label();
+            LabelAddressC = new Label();
+            LabelFullNameC = new Label();
+            PhoneNumberFieldC = new TextBox();
+            AddressFieldC = new TextBox();
+            FullNameFieldC = new TextBox();
             buttonEditCustomers = new Button();
             buttonDelCustomers = new Button();
             buttonAddCustomers = new Button();
@@ -187,6 +198,7 @@
             // 
             // panelEmployees
             // 
+            panelEmployees.Controls.Add(buttonClear);
             panelEmployees.Controls.Add(TerminationDateField);
             panelEmployees.Controls.Add(HireDateField);
             panelEmployees.Controls.Add(BirthDateField);
@@ -208,6 +220,16 @@
             panelEmployees.Size = new Size(1330, 120);
             panelEmployees.TabIndex = 3;
             // 
+            // buttonClear
+            // 
+            buttonClear.Location = new Point(1280, 87);
+            buttonClear.Name = "buttonClear";
+            buttonClear.Size = new Size(26, 33);
+            buttonClear.TabIndex = 33;
+            buttonClear.Text = "C";
+            buttonClear.UseVisualStyleBackColor = true;
+            buttonClear.Click += button1_Click_1;
+            // 
             // TerminationDateField
             // 
             TerminationDateField.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
@@ -216,6 +238,7 @@
             TerminationDateField.Size = new Size(256, 34);
             TerminationDateField.TabIndex = 32;
             TerminationDateField.Value = new DateTime(2023, 8, 18, 12, 48, 0, 0);
+            TerminationDateField.ValueChanged += TerminationDateField_ValueChanged;
             // 
             // HireDateField
             // 
@@ -391,6 +414,16 @@
             // 
             // panelCustomers
             // 
+            panelCustomers.Controls.Add(RegistrationDateFieldC);
+            panelCustomers.Controls.Add(BirthDateFieldC);
+            panelCustomers.Controls.Add(LabelRegistrationDateC);
+            panelCustomers.Controls.Add(LabelBirthDateC);
+            panelCustomers.Controls.Add(LabelPhoneNumberC);
+            panelCustomers.Controls.Add(LabelAddressC);
+            panelCustomers.Controls.Add(LabelFullNameC);
+            panelCustomers.Controls.Add(PhoneNumberFieldC);
+            panelCustomers.Controls.Add(AddressFieldC);
+            panelCustomers.Controls.Add(FullNameFieldC);
             panelCustomers.Controls.Add(buttonEditCustomers);
             panelCustomers.Controls.Add(buttonDelCustomers);
             panelCustomers.Controls.Add(buttonAddCustomers);
@@ -400,6 +433,96 @@
             panelCustomers.Size = new Size(1330, 120);
             panelCustomers.TabIndex = 3;
             // 
+            // RegistrationDateFieldC
+            // 
+            RegistrationDateFieldC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            RegistrationDateFieldC.Location = new Point(1041, 43);
+            RegistrationDateFieldC.Name = "RegistrationDateFieldC";
+            RegistrationDateFieldC.Size = new Size(256, 34);
+            RegistrationDateFieldC.TabIndex = 43;
+            // 
+            // BirthDateFieldC
+            // 
+            BirthDateFieldC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            BirthDateFieldC.Location = new Point(1041, 3);
+            BirthDateFieldC.Name = "BirthDateFieldC";
+            BirthDateFieldC.Size = new Size(256, 34);
+            BirthDateFieldC.TabIndex = 42;
+            // 
+            // LabelRegistrationDateC
+            // 
+            LabelRegistrationDateC.AutoSize = true;
+            LabelRegistrationDateC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelRegistrationDateC.Location = new Point(851, 49);
+            LabelRegistrationDateC.Name = "LabelRegistrationDateC";
+            LabelRegistrationDateC.Size = new Size(184, 27);
+            LabelRegistrationDateC.TabIndex = 40;
+            LabelRegistrationDateC.Text = "Дата регистарции";
+            // 
+            // LabelBirthDateC
+            // 
+            LabelBirthDateC.AutoSize = true;
+            LabelBirthDateC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelBirthDateC.Location = new Point(880, 10);
+            LabelBirthDateC.Name = "LabelBirthDateC";
+            LabelBirthDateC.Size = new Size(155, 27);
+            LabelBirthDateC.TabIndex = 39;
+            LabelBirthDateC.Text = "Дата рождения";
+            // 
+            // LabelPhoneNumberC
+            // 
+            LabelPhoneNumberC.AutoSize = true;
+            LabelPhoneNumberC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelPhoneNumberC.Location = new Point(382, 84);
+            LabelPhoneNumberC.Name = "LabelPhoneNumberC";
+            LabelPhoneNumberC.Size = new Size(96, 27);
+            LabelPhoneNumberC.TabIndex = 38;
+            LabelPhoneNumberC.Text = "Телефон";
+            // 
+            // LabelAddressC
+            // 
+            LabelAddressC.AutoSize = true;
+            LabelAddressC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelAddressC.Location = new Point(410, 46);
+            LabelAddressC.Name = "LabelAddressC";
+            LabelAddressC.Size = new Size(68, 27);
+            LabelAddressC.TabIndex = 37;
+            LabelAddressC.Text = "Адрес";
+            // 
+            // LabelFullNameC
+            // 
+            LabelFullNameC.AutoSize = true;
+            LabelFullNameC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            LabelFullNameC.Location = new Point(425, 10);
+            LabelFullNameC.Name = "LabelFullNameC";
+            LabelFullNameC.Size = new Size(53, 27);
+            LabelFullNameC.TabIndex = 36;
+            LabelFullNameC.Text = "ФИО";
+            // 
+            // PhoneNumberFieldC
+            // 
+            PhoneNumberFieldC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            PhoneNumberFieldC.Location = new Point(484, 84);
+            PhoneNumberFieldC.Name = "PhoneNumberFieldC";
+            PhoneNumberFieldC.Size = new Size(232, 34);
+            PhoneNumberFieldC.TabIndex = 35;
+            // 
+            // AddressFieldC
+            // 
+            AddressFieldC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            AddressFieldC.Location = new Point(484, 43);
+            AddressFieldC.Name = "AddressFieldC";
+            AddressFieldC.Size = new Size(232, 34);
+            AddressFieldC.TabIndex = 34;
+            // 
+            // FullNameFieldC
+            // 
+            FullNameFieldC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            FullNameFieldC.Location = new Point(484, 3);
+            FullNameFieldC.Name = "FullNameFieldC";
+            FullNameFieldC.Size = new Size(232, 34);
+            FullNameFieldC.TabIndex = 33;
+            // 
             // buttonEditCustomers
             // 
             buttonEditCustomers.Location = new Point(3, 39);
@@ -408,6 +531,7 @@
             buttonEditCustomers.TabIndex = 5;
             buttonEditCustomers.Text = "Изменить клиента";
             buttonEditCustomers.UseVisualStyleBackColor = true;
+            buttonEditCustomers.Click += buttonEditCustomers_Click;
             // 
             // buttonDelCustomers
             // 
@@ -417,6 +541,7 @@
             buttonDelCustomers.TabIndex = 4;
             buttonDelCustomers.Text = "Удалить клиента";
             buttonDelCustomers.UseVisualStyleBackColor = true;
+            buttonDelCustomers.Click += buttonDelCustomers_Click;
             // 
             // buttonAddCustomers
             // 
@@ -711,6 +836,7 @@
             Customers.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
             panelCustomers.ResumeLayout(false);
+            panelCustomers.PerformLayout();
             Movies.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             panelMovies.ResumeLayout(false);
@@ -780,5 +906,16 @@
         private TextBox PhoneNumberField;
         private TextBox AddressField;
         private TextBox FullNameField;
+        private Button buttonClear;
+        private DateTimePicker RegistrationDateFieldC;
+        private DateTimePicker BirthDateFieldC;
+        private Label LabelRegistrationDateC;
+        private Label LabelBirthDateC;
+        private Label LabelPhoneNumberC;
+        private Label LabelAddressC;
+        private Label LabelFullNameC;
+        private TextBox PhoneNumberFieldC;
+        private TextBox AddressFieldC;
+        private TextBox FullNameFieldC;
     }
 }
