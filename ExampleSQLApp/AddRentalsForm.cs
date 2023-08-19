@@ -169,7 +169,7 @@ namespace ExampleSQLApp
                     // Выполняем запрос
                     command.ExecuteNonQuery();
 
-                    MessageBox.Show("Аренда успешно добавлена.");
+                    //MessageBox.Show("Аренда успешно добавлена.");
                 }
             }
 

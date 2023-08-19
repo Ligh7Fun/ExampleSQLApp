@@ -64,11 +64,11 @@ namespace ExampleSQLApp
                     // Выполняем запрос
                     command.ExecuteNonQuery();
 
-                    MessageBox.Show("Фильм успешно добавлен.");
+                    //MessageBox.Show("Фильм успешно добавлен.");
                 }
             }
 
-            
+
             // Очищаем поля ввода
             TitleField.Clear();
             DirectorField.Clear();
@@ -92,6 +92,30 @@ namespace ExampleSQLApp
             {
                 this.Left += e.X - LastPoint.X;
                 this.Top += e.Y - LastPoint.Y;
+            }
+        }
+
+        private void DailyRentalCostField_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != ',')
+            {
+                e.Handled = true; // Игнорировать символы, не являющиеся цифрами
+            }
+        }
+
+        private void ReleaseYearField_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Игнорировать символы, не являющиеся цифрами
+            }
+        }
+
+        private void DurationField_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Игнорировать символы, не являющиеся цифрами
             }
         }
     }

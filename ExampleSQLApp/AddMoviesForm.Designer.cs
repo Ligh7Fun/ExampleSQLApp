@@ -79,6 +79,7 @@
             DailyRentalCostField.Name = "DailyRentalCostField";
             DailyRentalCostField.Size = new Size(232, 34);
             DailyRentalCostField.TabIndex = 18;
+            DailyRentalCostField.KeyPress += DailyRentalCostField_KeyPress;
             // 
             // DurationField
             // 
@@ -87,6 +88,7 @@
             DurationField.Name = "DurationField";
             DurationField.Size = new Size(232, 34);
             DurationField.TabIndex = 17;
+            DurationField.KeyPress += DurationField_KeyPress;
             // 
             // CountryField
             // 
@@ -111,6 +113,7 @@
             ReleaseYearField.Name = "ReleaseYearField";
             ReleaseYearField.Size = new Size(232, 34);
             ReleaseYearField.TabIndex = 14;
+            ReleaseYearField.KeyPress += ReleaseYearField_KeyPress;
             // 
             // TitleField
             // 

@@ -73,6 +73,18 @@
             tableLayoutPanel3 = new TableLayoutPanel();
             listViewMovies = new ListView();
             panelMovies = new Panel();
+            label4 = new Label();
+            label5 = new Label();
+            label6 = new Label();
+            DailyRentalCostFieldM = new TextBox();
+            DurationFieldM = new TextBox();
+            CountryFieldM = new TextBox();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            DirectorFieldM = new TextBox();
+            ReleaseYearFieldM = new TextBox();
+            TitleFieldM = new TextBox();
             buttonEditMovies = new Button();
             buttonDelMovies = new Button();
             buttonAddMovies = new Button();
@@ -436,7 +448,7 @@
             // RegistrationDateFieldC
             // 
             RegistrationDateFieldC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            RegistrationDateFieldC.Location = new Point(1041, 43);
+            RegistrationDateFieldC.Location = new Point(1010, 43);
             RegistrationDateFieldC.Name = "RegistrationDateFieldC";
             RegistrationDateFieldC.Size = new Size(256, 34);
             RegistrationDateFieldC.TabIndex = 43;
@@ -444,7 +456,7 @@
             // BirthDateFieldC
             // 
             BirthDateFieldC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            BirthDateFieldC.Location = new Point(1041, 3);
+            BirthDateFieldC.Location = new Point(1010, 3);
             BirthDateFieldC.Name = "BirthDateFieldC";
             BirthDateFieldC.Size = new Size(256, 34);
             BirthDateFieldC.TabIndex = 42;
@@ -453,7 +465,7 @@
             // 
             LabelRegistrationDateC.AutoSize = true;
             LabelRegistrationDateC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            LabelRegistrationDateC.Location = new Point(851, 49);
+            LabelRegistrationDateC.Location = new Point(820, 49);
             LabelRegistrationDateC.Name = "LabelRegistrationDateC";
             LabelRegistrationDateC.Size = new Size(184, 27);
             LabelRegistrationDateC.TabIndex = 40;
@@ -463,7 +475,7 @@
             // 
             LabelBirthDateC.AutoSize = true;
             LabelBirthDateC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            LabelBirthDateC.Location = new Point(880, 10);
+            LabelBirthDateC.Location = new Point(849, 10);
             LabelBirthDateC.Name = "LabelBirthDateC";
             LabelBirthDateC.Size = new Size(155, 27);
             LabelBirthDateC.TabIndex = 39;
@@ -473,7 +485,7 @@
             // 
             LabelPhoneNumberC.AutoSize = true;
             LabelPhoneNumberC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            LabelPhoneNumberC.Location = new Point(382, 84);
+            LabelPhoneNumberC.Location = new Point(359, 84);
             LabelPhoneNumberC.Name = "LabelPhoneNumberC";
             LabelPhoneNumberC.Size = new Size(96, 27);
             LabelPhoneNumberC.TabIndex = 38;
@@ -483,7 +495,7 @@
             // 
             LabelAddressC.AutoSize = true;
             LabelAddressC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            LabelAddressC.Location = new Point(410, 46);
+            LabelAddressC.Location = new Point(387, 46);
             LabelAddressC.Name = "LabelAddressC";
             LabelAddressC.Size = new Size(68, 27);
             LabelAddressC.TabIndex = 37;
@@ -493,7 +505,7 @@
             // 
             LabelFullNameC.AutoSize = true;
             LabelFullNameC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            LabelFullNameC.Location = new Point(425, 10);
+            LabelFullNameC.Location = new Point(402, 10);
             LabelFullNameC.Name = "LabelFullNameC";
             LabelFullNameC.Size = new Size(53, 27);
             LabelFullNameC.TabIndex = 36;
@@ -502,7 +514,7 @@
             // PhoneNumberFieldC
             // 
             PhoneNumberFieldC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            PhoneNumberFieldC.Location = new Point(484, 84);
+            PhoneNumberFieldC.Location = new Point(461, 84);
             PhoneNumberFieldC.Name = "PhoneNumberFieldC";
             PhoneNumberFieldC.Size = new Size(232, 34);
             PhoneNumberFieldC.TabIndex = 35;
@@ -510,7 +522,7 @@
             // AddressFieldC
             // 
             AddressFieldC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            AddressFieldC.Location = new Point(484, 43);
+            AddressFieldC.Location = new Point(461, 43);
             AddressFieldC.Name = "AddressFieldC";
             AddressFieldC.Size = new Size(232, 34);
             AddressFieldC.TabIndex = 34;
@@ -518,7 +530,7 @@
             // FullNameFieldC
             // 
             FullNameFieldC.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            FullNameFieldC.Location = new Point(484, 3);
+            FullNameFieldC.Location = new Point(461, 3);
             FullNameFieldC.Name = "FullNameFieldC";
             FullNameFieldC.Size = new Size(232, 34);
             FullNameFieldC.TabIndex = 33;
@@ -595,6 +607,18 @@
             // 
             // panelMovies
             // 
+            panelMovies.Controls.Add(label4);
+            panelMovies.Controls.Add(label5);
+            panelMovies.Controls.Add(label6);
+            panelMovies.Controls.Add(DailyRentalCostFieldM);
+            panelMovies.Controls.Add(DurationFieldM);
+            panelMovies.Controls.Add(CountryFieldM);
+            panelMovies.Controls.Add(label1);
+            panelMovies.Controls.Add(label2);
+            panelMovies.Controls.Add(label3);
+            panelMovies.Controls.Add(DirectorFieldM);
+            panelMovies.Controls.Add(ReleaseYearFieldM);
+            panelMovies.Controls.Add(TitleFieldM);
             panelMovies.Controls.Add(buttonEditMovies);
             panelMovies.Controls.Add(buttonDelMovies);
             panelMovies.Controls.Add(buttonAddMovies);
@@ -604,6 +628,117 @@
             panelMovies.Size = new Size(1330, 120);
             panelMovies.TabIndex = 4;
             // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label4.Location = new Point(827, 87);
+            label4.Name = "label4";
+            label4.Size = new Size(177, 27);
+            label4.TabIndex = 50;
+            label4.Text = "Стоимость в день";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label5.Location = new Point(804, 50);
+            label5.Name = "label5";
+            label5.Size = new Size(200, 27);
+            label5.TabIndex = 49;
+            label5.Text = "Продолжительность";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label6.Location = new Point(928, 10);
+            label6.Name = "label6";
+            label6.Size = new Size(76, 27);
+            label6.TabIndex = 48;
+            label6.Text = "Страна";
+            // 
+            // DailyRentalCostFieldM
+            // 
+            DailyRentalCostFieldM.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            DailyRentalCostFieldM.Location = new Point(1010, 83);
+            DailyRentalCostFieldM.Name = "DailyRentalCostFieldM";
+            DailyRentalCostFieldM.Size = new Size(232, 34);
+            DailyRentalCostFieldM.TabIndex = 47;
+            DailyRentalCostFieldM.KeyPress += textBox4_KeyPress;
+            // 
+            // DurationFieldM
+            // 
+            DurationFieldM.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            DurationFieldM.Location = new Point(1010, 43);
+            DurationFieldM.Name = "DurationFieldM";
+            DurationFieldM.Size = new Size(232, 34);
+            DurationFieldM.TabIndex = 46;
+            DurationFieldM.KeyPress += textBox5_KeyPress;
+            // 
+            // CountryFieldM
+            // 
+            CountryFieldM.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            CountryFieldM.Location = new Point(1010, 3);
+            CountryFieldM.Name = "CountryFieldM";
+            CountryFieldM.Size = new Size(232, 34);
+            CountryFieldM.TabIndex = 45;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label1.Location = new Point(356, 84);
+            label1.Name = "label1";
+            label1.Size = new Size(99, 27);
+            label1.TabIndex = 44;
+            label1.Text = "Режиссёр";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label2.Location = new Point(325, 46);
+            label2.Name = "label2";
+            label2.Size = new Size(130, 27);
+            label2.TabIndex = 43;
+            label2.Text = "Год выпуска";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label3.Location = new Point(303, 10);
+            label3.Name = "label3";
+            label3.Size = new Size(152, 27);
+            label3.TabIndex = 42;
+            label3.Text = "Наименование";
+            // 
+            // DirectorFieldM
+            // 
+            DirectorFieldM.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            DirectorFieldM.Location = new Point(461, 83);
+            DirectorFieldM.Name = "DirectorFieldM";
+            DirectorFieldM.Size = new Size(232, 34);
+            DirectorFieldM.TabIndex = 41;
+            // 
+            // ReleaseYearFieldM
+            // 
+            ReleaseYearFieldM.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            ReleaseYearFieldM.Location = new Point(461, 43);
+            ReleaseYearFieldM.Name = "ReleaseYearFieldM";
+            ReleaseYearFieldM.Size = new Size(232, 34);
+            ReleaseYearFieldM.TabIndex = 40;
+            ReleaseYearFieldM.KeyPress += textBox2_KeyPress;
+            // 
+            // TitleFieldM
+            // 
+            TitleFieldM.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            TitleFieldM.Location = new Point(461, 3);
+            TitleFieldM.Name = "TitleFieldM";
+            TitleFieldM.Size = new Size(232, 34);
+            TitleFieldM.TabIndex = 39;
+            // 
             // buttonEditMovies
             // 
             buttonEditMovies.Location = new Point(3, 39);
@@ -612,6 +747,7 @@
             buttonEditMovies.TabIndex = 7;
             buttonEditMovies.Text = "Изменить фильм";
             buttonEditMovies.UseVisualStyleBackColor = true;
+            buttonEditMovies.Click += buttonEditMovies_Click;
             // 
             // buttonDelMovies
             // 
@@ -621,6 +757,7 @@
             buttonDelMovies.TabIndex = 6;
             buttonDelMovies.Text = "Удалить фильм";
             buttonDelMovies.UseVisualStyleBackColor = true;
+            buttonDelMovies.Click += buttonDelMovies_Click;
             // 
             // buttonAddMovies
             // 
@@ -840,6 +977,7 @@
             Movies.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             panelMovies.ResumeLayout(false);
+            panelMovies.PerformLayout();
             Rentals.ResumeLayout(false);
             tableLayoutPanel4.ResumeLayout(false);
             panelRentals.ResumeLayout(false);
@@ -917,5 +1055,17 @@
         private TextBox PhoneNumberFieldC;
         private TextBox AddressFieldC;
         private TextBox FullNameFieldC;
+        private Label label4;
+        private Label label5;
+        private Label label6;
+        private TextBox DailyRentalCostFieldM;
+        private TextBox DurationFieldM;
+        private TextBox CountryFieldM;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private TextBox DirectorFieldM;
+        private TextBox ReleaseYearFieldM;
+        private TextBox TitleFieldM;
     }
 }

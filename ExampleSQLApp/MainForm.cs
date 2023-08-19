@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Metrics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -19,7 +21,13 @@ namespace ExampleSQLApp
         public MainForm()
         {
             InitializeComponent();
-            //TabControl.SelectedIndexChanged += new EventHandler(TabControl_SelectedIndexChanged);
+
+            ButtonsDisable("Employees");
+            ButtonsDisable("Customers");
+            ButtonsDisable("Movies");
+            ButtonsDisable("Rentals");
+            ButtonsDisable("Ratings");
+
             TerminationDateField.CustomFormat = " ";
             TerminationDateField.Format = DateTimePickerFormat.Custom;
 
@@ -67,22 +75,93 @@ namespace ExampleSQLApp
             if (selectedTab == Employees)
             {
                 LoadEmployeesData();
+                ButtonsDisable("Employees");
             }
             else if (selectedTab == Customers)
             {
                 LoadCustomersData();
+                ButtonsDisable("Customers");
             }
             else if (selectedTab == Movies)
             {
                 LoadMoviesData();
+                ButtonsDisable("Movies");
             }
             else if (selectedTab == Rentals)
             {
                 LoadRentalsData();
+                ButtonsDisable("Rentals");
             }
             else if (selectedTab == Ratings)
             {
                 LoadRatingsData();
+                ButtonsDisable("Ratings");
+            }
+        }
+
+        public void ButtonsDisable(string buttonName)
+        {
+            if (buttonName == "Employees")
+            {
+                buttonEditEmployees.Enabled = false;
+                buttonDelEmployees.Enabled = false;
+            }
+
+            if (buttonName == "Customers")
+            {
+                buttonEditCustomers.Enabled = false;
+                buttonDelCustomers.Enabled = false;
+            }
+
+            if (buttonName == "Movies")
+            {
+                buttonEditMovies.Enabled = false;
+                buttonDelMovies.Enabled = false;
+            }
+
+            if (buttonName == "Rentals")
+            {
+                buttonEditRentals.Enabled = false;
+                buttonDelRentals.Enabled = false;
+            }
+
+            if (buttonName == "Ratings")
+            {
+                buttonEditRatings.Enabled = false;
+                buttonDelRatings.Enabled = false;
+            }
+        }
+
+        public void ButtonsEnable(string buttonName)
+        {
+            if (buttonName == "Employees")
+            {
+                buttonEditEmployees.Enabled = true;
+                buttonDelEmployees.Enabled = true;
+            }
+
+            if (buttonName == "Customers")
+            {
+                buttonEditCustomers.Enabled = true;
+                buttonDelCustomers.Enabled = true;
+            }
+
+            if (buttonName == "Movies")
+            {
+                buttonEditMovies.Enabled = true;
+                buttonDelMovies.Enabled = true;
+            }
+
+            if (buttonName == "Rentals")
+            {
+                buttonEditRentals.Enabled = true;
+                buttonDelRentals.Enabled = true;
+            }
+
+            if (buttonName == "Ratings")
+            {
+                buttonEditRatings.Enabled = true;
+                buttonDelRatings.Enabled = true;
             }
         }
 
@@ -420,9 +499,8 @@ namespace ExampleSQLApp
             if (listViewEmployees.SelectedItems.Count > 0)
             {
                 ListViewItem selectedItem = listViewEmployees.SelectedItems[0];
-                buttonEditEmployees.Enabled = true;
+                ButtonsEnable("Employees");
                 // Получаем данные из выбранной строки
-                //string employeeID = selectedItem.SubItems[0].Text;
                 string fullName = selectedItem.SubItems[1].Text;
                 string birthDate = selectedItem.SubItems[2].Text;
                 string address = selectedItem.SubItems[3].Text;
@@ -468,6 +546,7 @@ namespace ExampleSQLApp
             }
             else
             {
+                ButtonsDisable("Employees");
                 FullNameField.Text = string.Empty;
                 AddressField.Text = string.Empty;
                 PhoneNumberField.Text = string.Empty;
@@ -485,9 +564,8 @@ namespace ExampleSQLApp
             if (listViewCustomers.SelectedItems.Count > 0)
             {
                 ListViewItem selectedItem = listViewCustomers.SelectedItems[0];
-
+                ButtonsEnable("Customers");
                 // Получаем данные из выбранной строки
-                string customerID = selectedItem.SubItems[0].Text;
                 string fullName = selectedItem.SubItems[1].Text;
                 string birthDate = selectedItem.SubItems[2].Text;
                 string address = selectedItem.SubItems[3].Text;
@@ -505,6 +583,7 @@ namespace ExampleSQLApp
             }
             else
             {
+                ButtonsDisable("Customers");
                 FullNameFieldC.Text = string.Empty;
                 AddressFieldC.Text = string.Empty;
                 PhoneNumberFieldC.Text = string.Empty;
@@ -538,9 +617,8 @@ namespace ExampleSQLApp
             if (listViewMovies.SelectedItems.Count > 0)
             {
                 ListViewItem selectedItem = listViewMovies.SelectedItems[0];
-
+                ButtonsEnable("Movies");
                 // Получаем данные из выбранной строки
-                string movieID = selectedItem.SubItems[0].Text;
                 string title = selectedItem.SubItems[1].Text;
                 string releaseYear = selectedItem.SubItems[2].Text;
                 string director = selectedItem.SubItems[3].Text;
@@ -549,6 +627,22 @@ namespace ExampleSQLApp
                 string dailyRentalCost = selectedItem.SubItems[6].Text;
 
                 //TODO: значения в textbox'ах
+                TitleFieldM.Text = title;
+                ReleaseYearFieldM.Text = releaseYear;
+                DirectorFieldM.Text = director;
+                CountryFieldM.Text = country;
+                DurationFieldM.Text = duration;
+                DailyRentalCostFieldM.Text = dailyRentalCost;
+            }
+            else
+            {
+                ButtonsDisable("Movies");
+                TitleFieldM.Text = string.Empty;
+                ReleaseYearFieldM.Text = string.Empty;
+                DirectorFieldM.Text = string.Empty;
+                CountryFieldM.Text = string.Empty;
+                DurationFieldM.Text = string.Empty;
+                DailyRentalCostFieldM.Text = string.Empty;
             }
         }
 
@@ -586,6 +680,16 @@ namespace ExampleSQLApp
                 }
                 // Отобразить данные в таблице
                 LoadEmployeesData();
+                ButtonsDisable("Employees");
+                FullNameField.Text = string.Empty;
+                AddressField.Text = string.Empty;
+                PhoneNumberField.Text = string.Empty;
+                BirthDateField.CustomFormat = " ";
+                HireDateField.CustomFormat = " ";
+                TerminationDateField.CustomFormat = " ";
+                TerminationDateField.Value = TerminationDateField.MinDate;
+                HireDateField.Value = HireDateField.MinDate;
+                TerminationDateField.Value = TerminationDateField.MinDate;
             }
         }
 
@@ -650,7 +754,7 @@ namespace ExampleSQLApp
 
                         // Обновление данных в listView
                         LoadEmployeesData();
-
+                        ButtonsDisable("Employees");
                     }
                 }
             }
@@ -694,6 +798,16 @@ namespace ExampleSQLApp
                 }
                 // Отобразить данные в таблице
                 LoadCustomersData();
+                ButtonsDisable("Customers");
+                FullNameField.Text = string.Empty;
+                AddressField.Text = string.Empty;
+                PhoneNumberField.Text = string.Empty;
+                BirthDateField.CustomFormat = " ";
+                HireDateField.CustomFormat = " ";
+                TerminationDateField.CustomFormat = " ";
+                TerminationDateField.Value = TerminationDateField.MinDate;
+                HireDateField.Value = HireDateField.MinDate;
+                TerminationDateField.Value = TerminationDateField.MinDate;
             }
         }
 
@@ -749,14 +863,127 @@ namespace ExampleSQLApp
 
                         // Обновление данных в listView
                         LoadCustomersData();
-
+                        ButtonsDisable("Customers");
                     }
                 }
             }
-            else
-            {
-                MessageBox.Show("Не выбрано ни одной записи");
 
+        }
+
+        private void buttonDelMovies_Click(object sender, EventArgs e)
+        {
+            if (listViewMovies.SelectedItems.Count > 0)
+            {
+
+                // Получите идентификатор выбранной записи
+                int movieID = Convert.ToInt32(listViewMovies.SelectedItems[0].SubItems[0].Text);
+                if (MessageBox.Show("Вы уверены, что хотите удалить эту запись c ID " + movieID + "?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    // Выполните SQL-запрос для удаления записи из базы данных
+                    using (NpgsqlConnection connection = DB.GetConnection())
+                    {
+                        connection.Open();
+                        string deleteQuery = "DELETE FROM Movies WHERE MovieID = @movieID";
+                        using (NpgsqlCommand command = new NpgsqlCommand(deleteQuery, connection))
+                        {
+                            command.Parameters.AddWithValue("@movieID", movieID);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                }
+                ButtonsDisable("Movies");
+                // Отобразить данные в таблице
+                LoadMoviesData();
+                ButtonsDisable("Movies");
+                TitleFieldM.Text = string.Empty;
+                ReleaseYearFieldM.Text = string.Empty;
+                DirectorFieldM.Text = string.Empty;
+                CountryFieldM.Text = string.Empty;
+                DurationFieldM.Text = string.Empty;
+                DailyRentalCostFieldM.Text = string.Empty;
+            }
+        }
+
+        private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Игнорировать символы, не являющиеся цифрами
+            }
+        }
+
+        private void textBox5_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Игнорировать символы, не являющиеся цифрами
+            }
+        }
+
+        private void textBox4_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != ',')
+            {
+                e.Handled = true; // Игнорировать символы, не являющиеся цифрами
+            }
+        }
+
+        private void buttonEditMovies_Click(object sender, EventArgs e)
+        {
+            if (listViewMovies.SelectedItems.Count > 0)
+            {
+                // Получение выбранной строки и идентификатора сотрудника
+                ListViewItem selectedItem = listViewMovies.SelectedItems[0];
+                int movieID = Int32.Parse(selectedItem.SubItems[0].Text);
+
+                // Получение значений из компонентов ввода
+                string title = TitleFieldM.Text;
+                int releaseYear = Int32.Parse(ReleaseYearFieldM.Text);
+                string director = DirectorFieldM.Text;
+                string country = CountryFieldM.Text;
+                int duration = Int32.Parse(DurationFieldM.Text);
+                decimal dailyRentalCost = Decimal.Parse(DailyRentalCostFieldM.Text);
+
+
+                // Подключение к базе данных
+                using (NpgsqlConnection connection = DB.GetConnection())
+                {
+                    connection.Open();
+
+                    // SQL-запрос для обновления данных
+                    string updateQuery = @"
+                        UPDATE Movies
+                        SET Title = @title, ReleaseYear = @releaseYear, Director = @director,
+                            Country = @country, Duration = @duration, DailyRentalCost = @dailyRentalCost
+                        WHERE MovieID = @movieID";
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(updateQuery, connection))
+                    {
+                        // Добавление параметров
+                        command.Parameters.AddWithValue("@movieID", movieID);
+                        command.Parameters.AddWithValue("@title", title);
+                        command.Parameters.AddWithValue("@releaseYear", releaseYear);
+                        command.Parameters.AddWithValue("@director", director);
+                        command.Parameters.AddWithValue("@country", country);
+                        command.Parameters.AddWithValue("@duration", duration);
+                        command.Parameters.AddWithValue("@dailyRentalCost", dailyRentalCost);
+
+
+                        // Выполнение запроса
+                        command.ExecuteNonQuery();
+
+                        TitleFieldM.Text = string.Empty;
+                        ReleaseYearFieldM.Text = string.Empty;
+                        DirectorFieldM.Text = string.Empty;
+                        CountryFieldM.Text = string.Empty;
+                        DurationFieldM.Text = string.Empty;
+                        DailyRentalCostFieldM.Text = string.Empty;
+
+                        // Обновление данных в listView
+                        LoadMoviesData();
+                        ButtonsDisable("Movies");
+                    }
+                }
             }
         }
     }
