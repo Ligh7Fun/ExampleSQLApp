@@ -22,6 +22,5 @@ namespace ExampleSQLApp
             // Возвращает объект NpgsqlConnection, готовый для использования при подключении к базе данных PostgreSQL
             return new NpgsqlConnection(connectionString);
         }
-
     }
 }

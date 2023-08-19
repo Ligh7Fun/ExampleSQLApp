@@ -42,14 +42,11 @@ namespace ExampleSQLApp
 
         private void AddButton_Click(object sender, EventArgs e)
         {
-            // Получаем значения из компонентов ввода
             string fullName = FullNameField.Text;
             DateTime birthDate = BirthDateField.Value;
             string address = AddressField.Text;
             string phoneNumber = PhoneNumberField.Text;
             DateTime registrationDate = RegistrationDateField.Value;
-
-
 
             if (fullName == string.Empty || address == string.Empty || phoneNumber == string.Empty)
             {
@@ -78,14 +75,10 @@ namespace ExampleSQLApp
 
                     // Выполняем запрос
                     command.ExecuteNonQuery();
-
-                    //MessageBox.Show("Клиент успешно добавлен.");
                 }
             }
-
             this.Close();
             mainForm.LoadCustomersData();
-
         }
     }
 }

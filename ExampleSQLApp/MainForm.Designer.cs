@@ -109,6 +109,14 @@
             tableLayoutPanel5 = new TableLayoutPanel();
             listViewRatings = new ListView();
             panelRatings = new Panel();
+            label15 = new Label();
+            CommentField = new TextBox();
+            label14 = new Label();
+            RatingField = new TextBox();
+            ComboBoxMovieRatings = new ComboBox();
+            label12 = new Label();
+            ComboBoxCustomersRating = new ComboBox();
+            label13 = new Label();
             buttonEditRatings = new Button();
             buttonDelRatings = new Button();
             buttonAddRatings = new Button();
@@ -216,7 +224,6 @@
             listViewEmployees.UseCompatibleStateImageBehavior = false;
             listViewEmployees.View = View.Details;
             listViewEmployees.SelectedIndexChanged += listViewEmployees_SelectedIndexChanged;
-            listViewEmployees.MouseClick += listViewEmployees_MouseClick;
             // 
             // panelEmployees
             // 
@@ -1005,6 +1012,14 @@
             // 
             // panelRatings
             // 
+            panelRatings.Controls.Add(label15);
+            panelRatings.Controls.Add(CommentField);
+            panelRatings.Controls.Add(label14);
+            panelRatings.Controls.Add(RatingField);
+            panelRatings.Controls.Add(ComboBoxMovieRatings);
+            panelRatings.Controls.Add(label12);
+            panelRatings.Controls.Add(ComboBoxCustomersRating);
+            panelRatings.Controls.Add(label13);
             panelRatings.Controls.Add(buttonEditRatings);
             panelRatings.Controls.Add(buttonDelRatings);
             panelRatings.Controls.Add(buttonAddRatings);
@@ -1014,6 +1029,83 @@
             panelRatings.Size = new Size(1330, 120);
             panelRatings.TabIndex = 4;
             // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label15.Location = new Point(865, 42);
+            label15.Name = "label15";
+            label15.Size = new Size(139, 27);
+            label15.TabIndex = 47;
+            label15.Text = "Комментарий";
+            // 
+            // CommentField
+            // 
+            CommentField.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            CommentField.Location = new Point(1010, 3);
+            CommentField.MaxLength = 100;
+            CommentField.Multiline = true;
+            CommentField.Name = "CommentField";
+            CommentField.Size = new Size(300, 114);
+            CommentField.TabIndex = 46;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label14.Location = new Point(374, 87);
+            label14.Name = "label14";
+            label14.Size = new Size(81, 27);
+            label14.TabIndex = 45;
+            label14.Text = "Оценка";
+            // 
+            // RatingField
+            // 
+            RatingField.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            RatingField.Location = new Point(461, 84);
+            RatingField.Name = "RatingField";
+            RatingField.Size = new Size(232, 34);
+            RatingField.TabIndex = 44;
+            RatingField.KeyPress += RatingField_KeyPress;
+            // 
+            // ComboBoxMovieRatings
+            // 
+            ComboBoxMovieRatings.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            ComboBoxMovieRatings.FormattingEnabled = true;
+            ComboBoxMovieRatings.Location = new Point(461, 44);
+            ComboBoxMovieRatings.Name = "ComboBoxMovieRatings";
+            ComboBoxMovieRatings.Size = new Size(232, 35);
+            ComboBoxMovieRatings.TabIndex = 29;
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label12.Location = new Point(384, 47);
+            label12.Name = "label12";
+            label12.Size = new Size(71, 27);
+            label12.TabIndex = 28;
+            label12.Text = "Фильм";
+            // 
+            // ComboBoxCustomersRating
+            // 
+            ComboBoxCustomersRating.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            ComboBoxCustomersRating.FormattingEnabled = true;
+            ComboBoxCustomersRating.Location = new Point(461, 3);
+            ComboBoxCustomersRating.Name = "ComboBoxCustomersRating";
+            ComboBoxCustomersRating.Size = new Size(232, 35);
+            ComboBoxCustomersRating.TabIndex = 27;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label13.Location = new Point(376, 6);
+            label13.Name = "label13";
+            label13.Size = new Size(79, 27);
+            label13.TabIndex = 26;
+            label13.Text = "Клиент";
+            // 
             // buttonEditRatings
             // 
             buttonEditRatings.Location = new Point(3, 39);
@@ -1022,6 +1114,7 @@
             buttonEditRatings.TabIndex = 7;
             buttonEditRatings.Text = "Изменить оценку";
             buttonEditRatings.UseVisualStyleBackColor = true;
+            buttonEditRatings.Click += buttonEditRatings_Click;
             // 
             // buttonDelRatings
             // 
@@ -1031,6 +1124,7 @@
             buttonDelRatings.TabIndex = 6;
             buttonDelRatings.Text = "Удалить оценку";
             buttonDelRatings.UseVisualStyleBackColor = true;
+            buttonDelRatings.Click += buttonDelRatings_Click;
             // 
             // buttonAddRatings
             // 
@@ -1100,6 +1194,7 @@
             Ratings.ResumeLayout(false);
             tableLayoutPanel5.ResumeLayout(false);
             panelRatings.ResumeLayout(false);
+            panelRatings.PerformLayout();
             TopPanel.ResumeLayout(false);
             TopPanel.PerformLayout();
             ResumeLayout(false);
@@ -1193,5 +1288,13 @@
         private Label label10;
         private DateTimePicker RentalReturnDateR;
         private Label label11;
+        private Label label14;
+        private TextBox RatingField;
+        private ComboBox ComboBoxMovieRatings;
+        private Label label12;
+        private ComboBox ComboBoxCustomersRating;
+        private Label label13;
+        private Label label15;
+        private TextBox CommentField;
     }
 }

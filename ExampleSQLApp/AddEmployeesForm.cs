@@ -45,7 +45,6 @@ namespace ExampleSQLApp
 
         private void AddButton_Click(object sender, EventArgs e)
         {
-            // Получаем значения из компонентов ввода
             string fullName = FullNameField.Text;
             DateTime birthDate = BirthDateField.Value;
             string address = AddressField.Text;
@@ -88,11 +87,8 @@ namespace ExampleSQLApp
 
                     // Выполняем запрос
                     command.ExecuteNonQuery();
-
-                    //MessageBox.Show("Сотрудник успешно добавлен.");
                 }
             }
-
             this.Close();
             mainForm.LoadEmployeesData();
         }

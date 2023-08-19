@@ -27,15 +27,34 @@ namespace ExampleSQLApp
 
         private void EnterButton_Click(object sender, EventArgs e)
         {
-            // Получаем значения из компонентов ввода
             string title = TitleField.Text;
-            int releaseYear = int.Parse(ReleaseYearField.Text);
             string director = DirectorField.Text;
             string country = CountryField.Text;
-            int duration = int.Parse(DurationField.Text); // Продолжительность фильма в минутах
-            decimal dailyRentalCost = decimal.Parse(DailyRentalCostField.Text);
 
-            if (title == string.Empty || director == string.Empty || country == string.Empty || releaseYear <= 0 || country == string.Empty || duration <= 0 || dailyRentalCost <= 0)
+
+            int duration = 0; // Продолжительность фильма в минутах
+
+            if (!string.IsNullOrWhiteSpace(DurationField.Text))
+            {
+                duration = int.Parse(DurationField.Text);
+            }
+
+            int releaseYear = 0;
+
+            if (!string.IsNullOrWhiteSpace(ReleaseYearField.Text))
+            {
+                releaseYear = int.Parse(ReleaseYearField.Text);
+            }
+
+            decimal dailyRentalCost = 0;
+
+            if (!string.IsNullOrWhiteSpace(DailyRentalCostField.Text))
+            {
+                dailyRentalCost = decimal.Parse(DailyRentalCostField.Text);
+            }
+
+
+            if (title == string.Empty || director == string.Empty || country == string.Empty)
             {
                 MessageBox.Show("Все поля обязательны к заполнению.", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -63,19 +82,8 @@ namespace ExampleSQLApp
 
                     // Выполняем запрос
                     command.ExecuteNonQuery();
-
-                    //MessageBox.Show("Фильм успешно добавлен.");
                 }
             }
-
-
-            // Очищаем поля ввода
-            TitleField.Clear();
-            DirectorField.Clear();
-            CountryField.Clear();
-            ReleaseYearField.Clear();
-            DurationField.Clear();
-            DailyRentalCostField.Clear();
             this.Close();
             mainForm.LoadMoviesData();
         }

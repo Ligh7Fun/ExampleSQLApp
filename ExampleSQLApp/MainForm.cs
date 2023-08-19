@@ -17,10 +17,11 @@ namespace ExampleSQLApp
 {
     public partial class MainForm : Form
     {
-        private int columnWidth = 180; // Установливаем ширину столбцов
+        private int columnWidth = 180; // Ширина столбцов
         public MainForm()
         {
             InitializeComponent();
+
             LoadEmployeesData();
 
             ButtonsDisable("Employees");
@@ -77,7 +78,7 @@ namespace ExampleSQLApp
             TabControl tabControl = (TabControl)sender;
             TabPage selectedTab = tabControl.SelectedTab;
 
-            // Определяем, какая вкладка выбрана и вызываем соответствующий метод загрузки данных
+            // Определяем, какая вкладка выбрана и вызываем соответствующий метод загрузки данных в таблицу
             if (selectedTab == Employees)
             {
                 LoadEmployeesData();
@@ -105,7 +106,7 @@ namespace ExampleSQLApp
             }
         }
 
-        public void ButtonsDisable(string buttonName)
+        public void ButtonsDisable(string buttonName) // Отключаем кнопки
         {
             if (buttonName == "Employees")
             {
@@ -138,7 +139,7 @@ namespace ExampleSQLApp
             }
         }
 
-        public void ButtonsEnable(string buttonName)
+        public void ButtonsEnable(string buttonName) // Включаем кнопки
         {
             if (buttonName == "Employees")
             {
@@ -173,9 +174,7 @@ namespace ExampleSQLApp
 
         public void LoadMoviesData()
         {
-            // Очистите предыдущие данные в listViewMovies
             listViewMovies.Items.Clear();
-
             listViewMovies.View = View.Details;
 
             // Добавление заголовков столбцов
@@ -232,9 +231,7 @@ namespace ExampleSQLApp
 
         public void LoadEmployeesData()
         {
-            // Очистка предыдущих данных в listViewEmployees
             listViewEmployees.Items.Clear();
-
             listViewEmployees.View = View.Details;
 
             // Добавление заголовков столбцов
@@ -293,9 +290,7 @@ namespace ExampleSQLApp
 
         public void LoadCustomersData()
         {
-            // Очистите предыдущие данные в listViewCustomers
             listViewCustomers.Items.Clear();
-
             listViewCustomers.View = View.Details;
 
             // Добавление заголовков столбцов
@@ -350,9 +345,7 @@ namespace ExampleSQLApp
 
         public void LoadRentalsData()
         {
-            // Очистите предыдущие данные в listViewRentals
             listViewRentals.Items.Clear();
-
             listViewRentals.View = View.Details;
 
             // Добавление заголовков столбцов
@@ -414,9 +407,7 @@ namespace ExampleSQLApp
 
         public void LoadRatingsData()
         {
-            // Очистите предыдущие данные в listViewRatings
             listViewRatings.Items.Clear();
-
             listViewRatings.View = View.Details;
 
             // Добавление заголовков столбцов
@@ -425,12 +416,13 @@ namespace ExampleSQLApp
             listViewRatings.Columns.Add("Клиент");
             listViewRatings.Columns.Add("Фильм");
             listViewRatings.Columns.Add("Оценка");
-            listViewRatings.Columns.Add("Комментарий");
+
 
             foreach (ColumnHeader column in listViewRatings.Columns)
             {
                 column.Width = columnWidth;
             }
+            listViewRatings.Columns.Add("Комментарий", 550);
 
             // Подключение к базе данных
             using (NpgsqlConnection connection = DB.GetConnection())
@@ -438,7 +430,12 @@ namespace ExampleSQLApp
                 connection.Open();
 
                 // Выполнение SELECT запроса
-                string selectQuery = "SELECT * FROM Ratings ORDER BY RatingID";
+                string selectQuery = "SELECT RatingID, Customers.FullName, Movies.Title, Rating, Comment " +
+                                     "FROM Ratings " +
+                                     "INNER JOIN Customers ON Ratings.CustomerID = Customers.CustomerID " +
+                                     "INNER JOIN Movies ON Ratings.MovieID = Movies.MovieID " +
+                                     "ORDER BY RatingID";
+
                 using (NpgsqlCommand command = new NpgsqlCommand(selectQuery, connection))
                 {
                     using (NpgsqlDataReader reader = command.ExecuteReader())
@@ -447,14 +444,14 @@ namespace ExampleSQLApp
                         while (reader.Read())
                         {
                             int ratingID = reader.GetInt32(0);
-                            int customerID = reader.GetInt32(1);
-                            int movieID = reader.GetInt32(2);
+                            string customerName = reader.GetString(1);
+                            string movieTitle = reader.GetString(2);
                             int rating = reader.GetInt32(3);
                             string comment = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
 
                             ListViewItem item = new ListViewItem(ratingID.ToString());
-                            item.SubItems.Add(customerID.ToString());
-                            item.SubItems.Add(movieID.ToString());
+                            item.SubItems.Add(customerName);
+                            item.SubItems.Add(movieTitle);
                             item.SubItems.Add(rating.ToString());
                             item.SubItems.Add(comment);
 
@@ -488,15 +485,63 @@ namespace ExampleSQLApp
             if (listViewRatings.SelectedItems.Count > 0)
             {
                 ListViewItem selectedItem = listViewRatings.SelectedItems[0];
-
+                ButtonsEnable("Ratings");
                 // Получаем данные из выбранной строки
-                string ratingID = selectedItem.SubItems[0].Text;
-                string customerID = selectedItem.SubItems[1].Text;
-                string movieID = selectedItem.SubItems[2].Text;
+                string customer = selectedItem.SubItems[1].Text;
+                string movie = selectedItem.SubItems[2].Text;
                 string rating = selectedItem.SubItems[3].Text;
                 string comment = selectedItem.SubItems[4].Text;
 
-                //TODO: значения в textbox'ах
+                ComboBoxCustomersRating.Items.Clear();
+                ComboBoxMovieRatings.Items.Clear();
+
+                // Добавляем все элементы из базы в ComboBox
+                using (NpgsqlConnection connection = DB.GetConnection())
+                {
+                    connection.Open();
+
+                    // Запросы для получения всех значений из соответствующих таблиц
+                    string customersQuery = "SELECT FullName FROM Customers";
+                    string moviesQuery = "SELECT Title FROM Movies";
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(customersQuery, connection))
+                    {
+                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                ComboBoxCustomersRating.Items.Add(reader.GetString(0));
+                            }
+                        }
+                    }
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(moviesQuery, connection))
+                    {
+                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                ComboBoxMovieRatings.Items.Add(reader.GetString(0));
+                            }
+                        }
+                    }
+                }
+
+                // Устанавливаем выбранные значения
+                ComboBoxCustomersRating.SelectedItem = customer;
+                ComboBoxMovieRatings.SelectedItem = movie;
+                RatingField.Text = rating;
+                CommentField.Text = comment;
+            }
+            else
+            {
+                ButtonsDisable("Ratings");
+                ComboBoxCustomersRating.Items.Clear();
+                ComboBoxMovieRatings.Items.Clear();
+                ComboBoxCustomersRating.Text = string.Empty;
+                ComboBoxMovieRatings.Text = string.Empty;
+                RatingField.Text = string.Empty;
+                CommentField.Text = string.Empty;
             }
         }
 
@@ -514,7 +559,6 @@ namespace ExampleSQLApp
                 string hireDate = selectedItem.SubItems[5].Text;
                 string terminationDate = selectedItem.SubItems[6].Text;
 
-                //TODO: значения в textbox'ах
                 FullNameField.Text = fullName;
                 AddressField.Text = address;
                 PhoneNumberField.Text = phoneNumber;
@@ -578,7 +622,6 @@ namespace ExampleSQLApp
                 string phoneNumber = selectedItem.SubItems[4].Text;
                 string registrationDate = selectedItem.SubItems[5].Text;
 
-                //TODO: значения в textbox'ах
                 FullNameFieldC.Text = fullName;
                 AddressFieldC.Text = address;
                 PhoneNumberFieldC.Text = phoneNumber;
@@ -662,8 +705,6 @@ namespace ExampleSQLApp
                     }
                 }
 
-
-                //TODO: значения в textbox'ах
                 // Устанавливаем выбранные значения
                 ComboBoxCustomerR.SelectedItem = customer;
                 ComboBoxEmployeeR.SelectedItem = employee;
@@ -701,7 +742,6 @@ namespace ExampleSQLApp
                 string duration = selectedItem.SubItems[5].Text;
                 string dailyRentalCost = selectedItem.SubItems[6].Text;
 
-                //TODO: значения в textbox'ах
                 TitleFieldM.Text = title;
                 ReleaseYearFieldM.Text = releaseYear;
                 DirectorFieldM.Text = director;
@@ -719,11 +759,6 @@ namespace ExampleSQLApp
                 DurationFieldM.Text = string.Empty;
                 DailyRentalCostFieldM.Text = string.Empty;
             }
-        }
-
-        private void listViewEmployees_MouseClick(object sender, MouseEventArgs e)
-        {
-
         }
 
         private void buttonAddCustomers_Click(object sender, EventArgs e)
@@ -768,7 +803,7 @@ namespace ExampleSQLApp
                 }
                 finally
                 {
-                    // Отобразить данные в таблице
+                    // Обновить данные в таблице
                     LoadEmployeesData();
                     ButtonsDisable("Employees");
                     FullNameField.Text = string.Empty;
@@ -787,7 +822,8 @@ namespace ExampleSQLApp
 
         private void buttonAddRatings_Click(object sender, EventArgs e)
         {
-
+            AddRatingsForm addMRatingForm = new AddRatingsForm(this);
+            addMRatingForm.ShowDialog();
         }
 
         private void buttonEditEmployees_Click(object sender, EventArgs e)
@@ -804,9 +840,7 @@ namespace ExampleSQLApp
                 string phoneNumber = PhoneNumberField.Text;
                 DateTime birthDate = BirthDateField.Value;
                 DateTime hireDate = HireDateField.Value;
-                DateTime? terminationDate = TerminationDateField.Value != TerminationDateField.MinDate
-                    ? (DateTime?)TerminationDateField.Value
-                    : null;
+                DateTime? terminationDate = TerminationDateField.Value != TerminationDateField.MinDate ? (DateTime?)TerminationDateField.Value : null;
 
                 // Подключение к базе данных
                 using (NpgsqlConnection connection = DB.GetConnection())
@@ -849,10 +883,6 @@ namespace ExampleSQLApp
                         ButtonsDisable("Employees");
                     }
                 }
-            }
-            else
-            {
-                MessageBox.Show("Не выбрано ни одной записи");
             }
         }
 
@@ -903,7 +933,7 @@ namespace ExampleSQLApp
                 }
                 finally
                 {
-                    // Отобразить данные в таблице
+                    // Обновить данные в таблице
                     LoadCustomersData();
                     ButtonsDisable("Customers");
                     FullNameField.Text = string.Empty;
@@ -1014,7 +1044,7 @@ namespace ExampleSQLApp
                 finally
                 {
                     ButtonsDisable("Movies");
-                    // Отобразить данные в таблице
+                    // Обновить данные в таблице
                     LoadMoviesData();
                     ButtonsDisable("Movies");
                     TitleFieldM.Text = string.Empty;
@@ -1091,7 +1121,6 @@ namespace ExampleSQLApp
                         command.Parameters.AddWithValue("@duration", duration);
                         command.Parameters.AddWithValue("@dailyRentalCost", dailyRentalCost);
 
-
                         // Выполнение запроса
                         command.ExecuteNonQuery();
 
@@ -1131,18 +1160,19 @@ namespace ExampleSQLApp
                         }
                     }
                 }
-                // Отобразить данные в таблице
+                // Обновить данные в таблице
                 LoadRentalsData();
                 ButtonsDisable("Rentals");
-                /*FullNameField.Text = string.Empty;
-                AddressField.Text = string.Empty;
-                PhoneNumberField.Text = string.Empty;
-                BirthDateField.CustomFormat = " ";
-                HireDateField.CustomFormat = " ";
-                TerminationDateField.CustomFormat = " ";
-                TerminationDateField.Value = TerminationDateField.MinDate;
-                HireDateField.Value = HireDateField.MinDate;
-                TerminationDateField.Value = TerminationDateField.MinDate;*/
+                ComboBoxCustomerR.Items.Clear();
+                ComboBoxEmployeeR.Items.Clear();
+                ComboBoxMovieR.Items.Clear();
+                ComboBoxCustomerR.Text = string.Empty;
+                ComboBoxEmployeeR.Text = string.Empty;
+                ComboBoxMovieR.Text = string.Empty;
+                RentalStartDateR.CustomFormat = " ";
+                RentalReturnDateR.CustomFormat = " ";
+                RentalStartDateR.Value = RentalStartDateR.MinDate;
+                RentalReturnDateR.Value = RentalReturnDateR.MinDate;
             }
         }
         // Метод для получения идентификатора по значению из определенной таблицы и столбца
@@ -1175,9 +1205,9 @@ namespace ExampleSQLApp
                 int rentalID = Int32.Parse(selectedItem.SubItems[0].Text);
 
                 // Получение значений из компонентов ввода
-                string customer = ComboBoxCustomerR.SelectedItem.ToString();
-                string employee = ComboBoxEmployeeR.SelectedItem.ToString();
-                string movie = ComboBoxMovieR.SelectedItem.ToString();
+                string customer = ComboBoxCustomerR.SelectedItem.ToString() ?? string.Empty;
+                string employee = ComboBoxEmployeeR.SelectedItem.ToString() ?? string.Empty;
+                string movie = ComboBoxMovieR.SelectedItem.ToString() ?? string.Empty;
                 DateTime rentalDate = RentalStartDateR.Value;
                 DateTime returnDate = RentalReturnDateR.Value;
 
@@ -1230,7 +1260,106 @@ namespace ExampleSQLApp
                     }
                 }
             }
+        }
 
+        private void buttonDelRatings_Click(object sender, EventArgs e)
+        {
+            if (listViewRatings.SelectedItems.Count > 0)
+            {
+
+                // Получите идентификатор выбранной записи
+                int ratingID = Convert.ToInt32(listViewRatings.SelectedItems[0].SubItems[0].Text);
+                if (MessageBox.Show("Вы уверены, что хотите удалить эту запись c ID " + ratingID + "?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    // Выполните SQL-запрос для удаления записи из базы данных
+                    using (NpgsqlConnection connection = DB.GetConnection())
+                    {
+                        connection.Open();
+                        string deleteQuery = "DELETE FROM Ratings WHERE RatingID = @ratingID";
+                        using (NpgsqlCommand command = new NpgsqlCommand(deleteQuery, connection))
+                        {
+                            command.Parameters.AddWithValue("@ratingID", ratingID);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                }
+                // Обновить данные в таблице
+                LoadRatingsData();
+                ButtonsDisable("Ratings");
+            }
+        }
+
+        private void RatingField_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Игнорировать символы, не являющиеся цифрами
+            }
+        }
+
+        private void buttonEditRatings_Click(object sender, EventArgs e)
+        {
+            if (listViewRatings.SelectedItems.Count > 0)
+            {
+                // Получение выбранной строки и идентификатора оценки
+                ListViewItem selectedItem = listViewRatings.SelectedItems[0];
+                int ratingID = Int32.Parse(selectedItem.SubItems[0].Text);
+
+                // Получение значений из компонентов ввода
+                string customer = ComboBoxCustomersRating.SelectedItem.ToString() ?? string.Empty;
+                if (customer == null)
+                {
+                    customer = string.Empty;
+                }
+                string movie = ComboBoxMovieRatings.SelectedItem.ToString() ?? string.Empty;
+                if (movie == null)
+                {
+                    movie = string.Empty;
+                }
+                int rating = Convert.ToInt32(RatingField.Text);
+                string comment = CommentField.Text;
+
+                // Подключение к базе данных
+                using (NpgsqlConnection connection = DB.GetConnection())
+                {
+                    connection.Open();
+
+                    // Получение идентификаторов клиента и фильма из базы данных
+                    int customerID = GetIDForValue("Customers", "FullName", customer, connection);
+                    int movieID = GetIDForValue("Movies", "Title", movie, connection);
+
+                    // SQL-запрос для обновления данных
+                    string updateQuery = @"
+                        UPDATE Ratings
+                        SET CustomerID = @customerID, MovieID = @movieID, Rating = @rating, Comment = @comment
+                        WHERE RatingID = @ratingID";
+
+                    using (NpgsqlCommand command = new NpgsqlCommand(updateQuery, connection))
+                    {
+                        // Добавление параметров
+                        command.Parameters.AddWithValue("@ratingID", ratingID);
+                        command.Parameters.AddWithValue("@customerID", customerID);
+                        command.Parameters.AddWithValue("@movieID", movieID);
+                        command.Parameters.AddWithValue("@rating", rating);
+                        command.Parameters.AddWithValue("@comment", comment);
+
+                        // Выполнение запроса
+                        command.ExecuteNonQuery();
+
+                        // Очистка и обновление данных в ComboBox и других компонентах
+                        ComboBoxCustomersRating.Items.Clear();
+                        ComboBoxMovieRatings.Items.Clear();
+                        ComboBoxCustomersRating.Text = string.Empty;
+                        ComboBoxMovieRatings.Text = string.Empty;
+                        RatingField.Text = string.Empty;
+                        CommentField.Text = string.Empty;
+
+                        // Обновление данных в listView
+                        LoadRatingsData();
+                        ButtonsDisable("Ratings");
+                    }
+                }
+            }
         }
     }
 }
