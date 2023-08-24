@@ -120,6 +120,11 @@
             buttonEditRatings = new Button();
             buttonDelRatings = new Button();
             buttonAddRatings = new Button();
+            Reports = new TabPage();
+            DateTimeEndSalary = new DateTimePicker();
+            DateTimeStartSalary = new DateTimePicker();
+            SalaryReport = new Button();
+            RatingsReport = new Button();
             TopPanel = new Panel();
             CloseButton = new Label();
             TimerCreateTable = new System.Windows.Forms.Timer(components);
@@ -140,6 +145,7 @@
             Ratings.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
             panelRatings.SuspendLayout();
+            Reports.SuspendLayout();
             TopPanel.SuspendLayout();
             SuspendLayout();
             // 
@@ -175,6 +181,7 @@
             TabControl.Controls.Add(Movies);
             TabControl.Controls.Add(Rentals);
             TabControl.Controls.Add(Ratings);
+            TabControl.Controls.Add(Reports);
             TabControl.Dock = DockStyle.Fill;
             TabControl.Location = new Point(0, 65);
             TabControl.Name = "TabControl";
@@ -1136,6 +1143,56 @@
             buttonAddRatings.UseVisualStyleBackColor = true;
             buttonAddRatings.Click += buttonAddRatings_Click;
             // 
+            // Reports
+            // 
+            Reports.Controls.Add(DateTimeEndSalary);
+            Reports.Controls.Add(DateTimeStartSalary);
+            Reports.Controls.Add(SalaryReport);
+            Reports.Controls.Add(RatingsReport);
+            Reports.Location = new Point(4, 24);
+            Reports.Name = "Reports";
+            Reports.Padding = new Padding(3);
+            Reports.Size = new Size(1342, 636);
+            Reports.TabIndex = 5;
+            Reports.Text = "Отчеты";
+            Reports.UseVisualStyleBackColor = true;
+            // 
+            // DateTimeEndSalary
+            // 
+            DateTimeEndSalary.Location = new Point(201, 152);
+            DateTimeEndSalary.Name = "DateTimeEndSalary";
+            DateTimeEndSalary.Size = new Size(156, 23);
+            DateTimeEndSalary.TabIndex = 3;
+            // 
+            // DateTimeStartSalary
+            // 
+            DateTimeStartSalary.Location = new Point(8, 152);
+            DateTimeStartSalary.Name = "DateTimeStartSalary";
+            DateTimeStartSalary.Size = new Size(156, 23);
+            DateTimeStartSalary.TabIndex = 2;
+            // 
+            // SalaryReport
+            // 
+            SalaryReport.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            SalaryReport.Location = new Point(8, 86);
+            SalaryReport.Name = "SalaryReport";
+            SalaryReport.Size = new Size(349, 60);
+            SalaryReport.TabIndex = 1;
+            SalaryReport.Text = "Отчет по зарплате";
+            SalaryReport.UseVisualStyleBackColor = true;
+            SalaryReport.Click += SalaryReport_Click;
+            // 
+            // RatingsReport
+            // 
+            RatingsReport.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            RatingsReport.Location = new Point(8, 6);
+            RatingsReport.Name = "RatingsReport";
+            RatingsReport.Size = new Size(349, 60);
+            RatingsReport.TabIndex = 0;
+            RatingsReport.Text = "Отчет по рейтингам фильмов";
+            RatingsReport.UseVisualStyleBackColor = true;
+            RatingsReport.Click += RatingsReport_Click;
+            // 
             // TopPanel
             // 
             TopPanel.BackColor = Color.LemonChiffon;
@@ -1195,6 +1252,7 @@
             tableLayoutPanel5.ResumeLayout(false);
             panelRatings.ResumeLayout(false);
             panelRatings.PerformLayout();
+            Reports.ResumeLayout(false);
             TopPanel.ResumeLayout(false);
             TopPanel.PerformLayout();
             ResumeLayout(false);
@@ -1296,5 +1354,10 @@
         private Label label13;
         private Label label15;
         private TextBox CommentField;
+        private TabPage Reports;
+        private Button SalaryReport;
+        private Button RatingsReport;
+        private DateTimePicker DateTimeEndSalary;
+        private DateTimePicker DateTimeStartSalary;
     }
 }

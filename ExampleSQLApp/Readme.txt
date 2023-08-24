@@ -1,1 +1,1 @@
-﻿Через управление пакетами NuGet ставим Npgsql для работы с PostgreSQL
+﻿Через управление пакетами NuGet ставим Npgsql для работы с PostgreSQL и Microsoft.Office.Interop.Excel для отчетов.

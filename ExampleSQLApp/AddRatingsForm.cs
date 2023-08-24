@@ -34,7 +34,7 @@ namespace ExampleSQLApp
             using (NpgsqlCommand command = new NpgsqlCommand(selectQuery, connection))
             {
                 command.Parameters.AddWithValue("@value", value);
-                object result = command.ExecuteScalar();
+                object? result = command.ExecuteScalar();
                 if (result != null)
                 {
                     id = Convert.ToInt32(result);

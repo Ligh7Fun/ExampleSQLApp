@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using OfficeOpenXml;
+using System.IO.Packaging;
 
 namespace ExampleSQLApp
 {
@@ -54,13 +56,13 @@ namespace ExampleSQLApp
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            System.Windows.Forms.Application.Exit();
         }
 
-        Point LastPoint;
+        System.Drawing.Point LastPoint;
         private void TitleLabel_MouseDown(object sender, MouseEventArgs e)
         {
-            LastPoint = new Point(e.X, e.Y);
+            LastPoint = new System.Drawing.Point(e.X, e.Y);
         }
 
         private void TitleLabel_MouseMove(object sender, MouseEventArgs e)
@@ -1186,7 +1188,7 @@ namespace ExampleSQLApp
             using (NpgsqlCommand command = new NpgsqlCommand(selectQuery, connection))
             {
                 command.Parameters.AddWithValue("@value", value);
-                object result = command.ExecuteScalar();
+                object? result = command.ExecuteScalar();
                 if (result != null)
                 {
                     id = Convert.ToInt32(result);
@@ -1361,5 +1363,194 @@ namespace ExampleSQLApp
                 }
             }
         }
+
+        // Класс для хранения данных о рейтинге фильмов
+        public class RatingRecord
+        {
+            public string? MovieTitle { get; set; }
+            public double AverageRating { get; set; }
+        }
+
+        // Получение записей о рейтинге из базы данных
+        private List<RatingRecord> GetRatingRecordsFromDatabase()
+        {
+            List<RatingRecord> ratingRecords = new List<RatingRecord>();
+            string queryString = @"
+                SELECT m.Title AS MovieTitle, AVG(r.Rating) AS AverageRating
+                FROM Movies m
+                LEFT JOIN Ratings r ON m.MovieID = r.MovieID
+                GROUP BY m.Title";
+
+            // Установление соединения с базой данных и извлечение данных
+            using (NpgsqlConnection connection = DB.GetConnection()) // Предполагается, что класс DB обеспечивает соединение с базой данных
+            {
+                connection.Open();
+                using (NpgsqlCommand command = new NpgsqlCommand(queryString, connection))
+                {
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            RatingRecord record = new RatingRecord
+                            {
+                                MovieTitle = reader.GetString(0),
+                                AverageRating = reader.IsDBNull(1) ? 0 : reader.GetDouble(1)
+                            };
+                            ratingRecords.Add(record);
+                        }
+                    }
+                }
+            }
+            return ratingRecords;
+        }
+
+        private void GenerateAndSaveRatingsReport(List<RatingRecord> ratingRecords)
+        {
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Отчет по рейтингу");
+                worksheet.Column(1).Width = 60;
+                worksheet.Column(2).Width = 25;
+                worksheet.Cells["A1"].Value = "Отчет по рейтингу";
+                worksheet.Cells["A1:B1"].Merge = true;
+                worksheet.Cells["A1:B1"].Style.Font.Size = 14;
+                worksheet.Cells["A1:B1"].Style.Font.Bold = true;
+
+                worksheet.Cells["A2"].Value = "Фильм";
+                worksheet.Cells["B2"].Value = "Средний рейтинг";
+
+                int row = 3;
+                foreach (var record in ratingRecords)
+                {
+                    worksheet.Cells["A" + row].Value = record.MovieTitle;
+                    worksheet.Cells["B" + row].Value = record.AverageRating;
+                    row++;
+                }
+
+                using (var saveFileDialog = new SaveFileDialog())
+                {
+                    saveFileDialog.Filter = "Excel Files|*.xlsx";
+                    saveFileDialog.DefaultExt = "xlsx";
+                    saveFileDialog.FileName = "RatingReport.xlsx";
+
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        string filePath = saveFileDialog.FileName;
+                        package.SaveAs(new FileInfo(filePath));
+                    }
+                }
+            }
+        }
+
+        private void RatingsReport_Click(object sender, EventArgs e)
+        {
+            List<RatingRecord> ratingRecords = GetRatingRecordsFromDatabase();
+            GenerateAndSaveRatingsReport(ratingRecords);
+        }
+
+        // Класс для хранения записей о заработной плате
+        public class SalaryRecord
+        {
+            public string? EmployeeName { get; set; }
+            public decimal SalaryAmount { get; set; }
+        }
+
+        private List<SalaryRecord> GetSalaryRecordsFromDatabase(DateTime startDate, DateTime endDate)
+        {
+            List<SalaryRecord> salaryRecords = new List<SalaryRecord>();
+
+            string query = @"
+                SELECT 
+                    e.fullname AS employee,
+                    SUM(
+                        CASE 
+                            WHEN r.rentaldate >= @StartDate AND r.returndate <= @EndDate
+                                THEN m.dailyrentalcost * (DATE_PART('day', AGE(r.returndate, r.rentaldate)) + 1)
+                            WHEN r.rentaldate < @StartDate AND r.returndate > @EndDate
+                                THEN m.dailyrentalcost * (DATE_PART('day', AGE(@EndDate, @StartDate)) + 1)
+                            WHEN r.rentaldate < @StartDate AND r.returndate >= @StartDate
+                                THEN m.dailyrentalcost * (DATE_PART('day', AGE(r.returndate, @StartDate)) + 1)
+                            WHEN r.rentaldate <= @EndDate AND r.returndate > @EndDate
+                                THEN m.dailyrentalcost * (DATE_PART('day', AGE(@EndDate, r.rentaldate)) + 1)
+                        END
+                    ) AS salary
+                FROM rentals r
+                JOIN movies m ON r.movieid = m.movieid
+                JOIN employees e ON r.employeeid = e.employeeid
+                WHERE (r.rentaldate >= @StartDate AND r.rentaldate <= @EndDate) OR (r.returndate >= @StartDate AND r.returndate <= @EndDate)
+                GROUP BY e.fullname
+                ORDER BY e.fullname";
+
+            using (NpgsqlConnection connection = DB.GetConnection())
+            {
+                connection.Open();
+
+                using NpgsqlCommand command = new NpgsqlCommand(query, connection);
+                command.Parameters.AddWithValue("StartDate", startDate);
+                command.Parameters.AddWithValue("EndDate", endDate);
+
+                using NpgsqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    SalaryRecord record = new SalaryRecord();
+                    record.EmployeeName = reader["employee"].ToString();
+                    record.SalaryAmount = Convert.ToDecimal(reader["salary"]);
+                    salaryRecords.Add(record);
+                }
+            }
+
+            return salaryRecords;
+        }
+
+        private void GenerateAndSaveSalaryReport(List<SalaryRecord> salaryRecords, DateTime startDate, DateTime endDate)
+        {
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Отчет по зарплате");
+                worksheet.Column(1).Width = 60;
+                worksheet.Column(2).Width = 25;
+                worksheet.Column(2).Style.Numberformat.Format = "0.00 ₽";
+                worksheet.Cells["A1"].Value = "Отчет по зарплате " + startDate.ToString("dd.MM.yyyy") + " - " + endDate.ToString("dd.MM.yyyy");
+                worksheet.Cells["A1:B1"].Merge = true;
+                worksheet.Cells["A1:B1"].Style.Font.Size = 14;
+                worksheet.Cells["A1:B1"].Style.Font.Bold = true;
+
+                worksheet.Cells[2, 1].Value = "Сотрудник";
+                worksheet.Cells[2, 2].Value = "Зарплата";
+
+                int row = 3;
+                foreach (var record in salaryRecords)
+                {
+                    worksheet.Cells[row, 1].Value = record.EmployeeName;
+                    worksheet.Cells[row, 2].Value = record.SalaryAmount;
+                    row++;
+                }
+
+                // Интегрированный код сохранения файла с отчетом
+                using (var saveFileDialog = new SaveFileDialog())
+                {
+                    saveFileDialog.Filter = "Excel Files|*.xlsx";
+                    saveFileDialog.DefaultExt = "xlsx";
+                    saveFileDialog.FileName = "SalaryReport.xlsx";
+
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        string filePath = saveFileDialog.FileName;
+                        package.SaveAs(new FileInfo(filePath));
+                    }
+                }
+            }
+        }
+
+        private void SalaryReport_Click(object sender, EventArgs e)
+        {
+            DateTime startDate = DateTimeStartSalary.Value;
+            DateTime endDate = DateTimeEndSalary.Value;
+
+            List<SalaryRecord> salaryRecords = GetSalaryRecordsFromDatabase(startDate, endDate);
+            GenerateAndSaveSalaryReport(salaryRecords, startDate, endDate);
+        }
+
     }
 }
