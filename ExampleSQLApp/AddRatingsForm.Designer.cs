@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddRatingsForm));
             MainPanel = new Panel();
             CommentField = new TextBox();
             RatingField = new TextBox();
@@ -204,6 +205,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(MainPanel);
             FormBorderStyle = FormBorderStyle.None;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AddRatingsForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "AddRatingsForm";

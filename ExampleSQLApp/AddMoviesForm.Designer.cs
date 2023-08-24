@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddMoviesForm));
             MainPanel = new Panel();
             DailyRentalCostField = new TextBox();
             DurationField = new TextBox();
@@ -246,6 +247,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(MainPanel);
             FormBorderStyle = FormBorderStyle.None;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AddMoviesForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "AddMoviesForm";

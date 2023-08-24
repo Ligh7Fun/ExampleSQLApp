@@ -6,7 +6,12 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>OneDrive.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="OneDrive.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="images\" />
@@ -14,7 +19,6 @@
 
   <ItemGroup>
     <PackageReference Include="EPPlus" Version="6.2.8" />
-    <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
     <PackageReference Include="Npgsql" Version="7.0.4" />
   </ItemGroup>
 

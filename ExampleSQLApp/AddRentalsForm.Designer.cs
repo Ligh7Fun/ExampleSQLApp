@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddRentalsForm));
             RentalReturnDate = new DateTimePicker();
             RentalStartDate = new DateTimePicker();
             CloseButton = new Label();
@@ -224,6 +225,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(MainPanel);
             FormBorderStyle = FormBorderStyle.None;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AddRentalsForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "AddRentalsForm";

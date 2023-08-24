@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
             MainPanel = new Panel();
             EnterButton = new Button();
             PassField = new TextBox();
@@ -180,6 +181,7 @@
             Controls.Add(LabelMessage);
             Controls.Add(MainPanel);
             FormBorderStyle = FormBorderStyle.None;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "LoginForm";
             Text = "LoginForm";
             MainPanel.ResumeLayout(false);

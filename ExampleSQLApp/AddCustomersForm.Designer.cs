@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddCustomersForm));
             TitleLabel = new Label();
             RegistrationDateField = new DateTimePicker();
             BirthDateField = new DateTimePicker();
@@ -221,6 +222,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(MainPanel);
             FormBorderStyle = FormBorderStyle.None;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AddCustomersForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "AddCustomersForm";

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddEmployeesForm));
             MainPanel = new Panel();
             TerminationDateField = new DateTimePicker();
             HireDateField = new DateTimePicker();
@@ -245,6 +246,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(MainPanel);
             FormBorderStyle = FormBorderStyle.None;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AddEmployeesForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "AddEmployeesForm";
