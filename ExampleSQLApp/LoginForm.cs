@@ -17,11 +17,11 @@ namespace ExampleSQLApp
         {
             InitializeComponent();
             StartPosition = FormStartPosition.CenterScreen;
-            // Set the size of the password field
+            // Размер поля с паролем
             this.PassField.AutoSize = false;
             this.PassField.Size = new Size(300, 64);
 
-            // Set the size of the username field
+            // Размер поля с логином
             this.LoginField.AutoSize = false;
             this.LoginField.Size = new Size(300, 64);
             TimerCreateTable.Start();
