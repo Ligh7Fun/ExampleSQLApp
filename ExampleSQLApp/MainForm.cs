@@ -1382,7 +1382,7 @@ namespace ExampleSQLApp
                 GROUP BY m.Title";
 
             // Установление соединения с базой данных и извлечение данных
-            using (NpgsqlConnection connection = DB.GetConnection()) // Предполагается, что класс DB обеспечивает соединение с базой данных
+            using (NpgsqlConnection connection = DB.GetConnection())
             {
                 connection.Open();
                 using (NpgsqlCommand command = new NpgsqlCommand(queryString, connection))
